@@ -1,51 +1,196 @@
-<%= form_with(model: candidatura, local: true) do |form| %>
-  <% if candidatura.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(candidatura.errors.count, "error") %> proibiu esta candidatura de ser salva:</h2>
-      <ul>
-        <% candidatura.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+<div class="form-container">
+  <%= form_with(model: candidatura, local: true, class: "candidatura-form") do |form| %>
+    
+    <% if candidatura.errors.any? %>
+      <div class="form-errors">
+        <div class="error-header">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+          <h3><%= pluralize(candidatura.errors.count, "erro") %> encontrado:</h3>
+        </div>
+        <ul class="error-list">
+          <% candidatura.errors.full_messages.each do |message| %>
+            <li><i class="bi bi-x-circle"></i> <%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-header">
+      <i class="bi bi-person-badge-fill"></i>
+      <h2>Informações da Chapa</h2>
     </div>
+
+    <!-- Seção: Líder -->
+    <div class="form-section">
+      <div class="section-header leader-section">
+        <i class="bi bi-star-fill"></i>
+        <h3>Dados do Líder</h3>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 form-group">
+          <%= form.label :nome_candidato, "Nome Completo do Líder", class: "form-label" %>
+          <div class="input-with-icon">
+            <i class="bi bi-person-fill"></i>
+            <%= form.text_field :nome_candidato, 
+                class: "form-control", 
+                placeholder: "Ex: João da Silva Santos" %>
+          </div>
+        </div>
+
+        <div class="col-md-6 form-group">
+          <%= form.label :nome_urna, "Nome na Urna (Líder)", class: "form-label" %>
+          <div class="input-with-icon">
+            <i class="bi bi-card-text"></i>
+            <%= form.text_field :nome_urna, 
+                class: "form-control", 
+                placeholder: "Ex: JOÃO SILVA" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :foto_lider, "Foto do Líder", class: "form-label" %>
+        <div class="file-upload-wrapper">
+          <%= form.file_field :foto_lider, 
+              class: "form-control file-input", 
+              accept: "image/*",
+              id: "foto_lider_input" %>
+          <label for="foto_lider_input" class="file-upload-label">
+            <i class="bi bi-cloud-upload-fill"></i>
+            <span class="file-text">Clique para escolher uma foto ou arraste aqui</span>
+            <span class="file-info">PNG, JPG ou JPEG até 5MB</span>
+          </label>
+          <div class="preview-container" id="preview_foto_lider" style="display: none;">
+            <img src="" alt="Preview" class="image-preview">
+            <button type="button" class="btn-remove-image" onclick="removeImage('foto_lider')">
+              <i class="bi bi-x-circle-fill"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção: Vice-Líder -->
+    <div class="form-section">
+      <div class="section-header vice-section">
+        <i class="bi bi-award-fill"></i>
+        <h3>Dados do Vice-Líder</h3>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 form-group">
+          <%= form.label :vice_lider, "Nome Completo do Vice", class: "form-label" %>
+          <div class="input-with-icon">
+            <i class="bi bi-person-fill"></i>
+            <%= form.text_field :vice_lider, 
+                class: "form-control", 
+                placeholder: "Ex: Maria de Souza Lima" %>
+          </div>
+        </div>
+
+        <div class="col-md-6 form-group">
+          <%= form.label :nome_urna_vice, "Nome na Urna (Vice)", class: "form-label" %>
+          <div class="input-with-icon">
+            <i class="bi bi-card-text"></i>
+            <%= form.text_field :nome_urna_vice, 
+                class: "form-control", 
+                placeholder: "Ex: MARIA SOUZA" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :foto_vice, "Foto do Vice-Líder", class: "form-label" %>
+        <div class="file-upload-wrapper">
+          <%= form.file_field :foto_vice, 
+              class: "form-control file-input", 
+              accept: "image/*",
+              id: "foto_vice_input" %>
+          <label for="foto_vice_input" class="file-upload-label">
+            <i class="bi bi-cloud-upload-fill"></i>
+            <span class="file-text">Clique para escolher uma foto ou arraste aqui</span>
+            <span class="file-info">PNG, JPG ou JPEG até 5MB</span>
+          </label>
+          <div class="preview-container" id="preview_foto_vice" style="display: none;">
+            <img src="" alt="Preview" class="image-preview">
+            <button type="button" class="btn-remove-image" onclick="removeImage('foto_vice')">
+              <i class="bi bi-x-circle-fill"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção: Turma -->
+    <div class="form-section">
+      <div class="section-header turma-section">
+        <i class="bi bi-mortarboard-fill"></i>
+        <h3>Informações da Turma</h3>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :turma_id, "Selecione a Turma", class: "form-label" %>
+        <div class="input-with-icon">
+          <i class="bi bi-building"></i>
+          <%= form.collection_select :turma_id, 
+              Turma.all, 
+              :id, 
+              :nome, 
+              { prompt: "Escolha a turma..." },
+              { class: "form-control form-select" } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botões de Ação -->
+    <div class="form-actions">
+      <%= link_to candidaturas_path, class: "btn-form-cancel" do %>
+        <i class="bi bi-x-circle"></i> Cancelar
+      <% end %>
+      
+      <%= form.submit "Salvar Candidatura", class: "btn-form-submit" do %>
+        <i class="bi bi-check-circle-fill"></i>
+      <% end %>
+    </div>
+
   <% end %>
+</div>
 
-  <div class="form-group">
-    <%= form.label :nome_candidato %>
-    <%= form.text_field :nome_candidato, class: "form-control" %>
-  </div>
+<script>
+// Preview de imagens
+document.addEventListener('DOMContentLoaded', function() {
+  setupImagePreview('foto_lider_input', 'preview_foto_lider');
+  setupImagePreview('foto_vice_input', 'preview_foto_vice');
+});
 
-  <div class="form-group">
-    <%= form.label :nome_urna %>
-    <%= form.text_field :nome_urna, class: "form-control" %>
-  </div>
+function setupImagePreview(inputId, previewId) {
+  const input = document.getElementById(inputId);
+  const preview = document.getElementById(previewId);
+  
+  if (input) {
+    input.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = preview.querySelector('.image-preview');
+          img.src = e.target.result;
+          preview.style.display = 'block';
+          input.parentElement.querySelector('.file-upload-label').style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+}
 
-  <div class="form-group">
-    <%= form.label :turma_id %>
-    <%= form.collection_select :turma_id, Turma.all, :id, :nome, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :vice_lider %>
-    <%= form.text_field :vice_lider, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :nome_urna_vice %>
-    <%= form.text_field :nome_urna_vice, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :foto_lider %>
-    <%= form.file_field :foto_lider, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :foto_vice %>
-    <%= form.file_field :foto_vice, class: "form-control" %>
-  </div>
-
-  <div class="actions mt-3">
-    <%= form.submit class: "btn btn-primary" %>
-  </div>
-<% end %>
+function removeImage(type) {
+  const input = document.getElementById(type + '_input');
+  const preview = document.getElementById('preview_' + type);
+  
+  input.value = '';
+  preview.style.display = 'none';
+  input.parentElement.querySelector('.file-upload-label').style.display = 'flex';
+}
+</script>

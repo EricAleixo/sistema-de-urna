@@ -1,16 +1,129 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Eleições - Líderes de Turma" %>
 
-<% content_for :title, "Candidaturas" %>
-
-<h1>Candidaturas</h1>
-
-<div id="candidaturas">
-  <% @candidaturas.each do |candidatura| %>
-    <%= render candidatura %>
-    <p>
-      <%= link_to "Show this candidatura", candidatura %>
-    </p>
-  <% end %>
+<div class="elections-header">
+  <div class="container"> 
+    <div class="text-center mb-4">
+      <h1 class="elections-title">ELEIÇÕES</h1>
+      <h2 class="elections-subtitle">LÍDERES DE TURMA</h2>
+    </div>
+  </div>
 </div>
 
-<%= link_to "New candidatura", new_candidatura_path %>
+<div class="container my-5">
+  <div class="new-breadcrumb">
+    <%= link_to candidaturas_path, class: "breadcrumb-link" do %>
+      <i class="bi bi-house-fill"></i> Candidaturas
+    <% end %>
+  </div>
+  <% if notice %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  <% end %>
+
+  <div class="row g-4" id="candidaturas">
+    <% @candidaturas.each do |candidatura| %>
+      <div class="col-md-6 col-lg-4">
+        <div class="candidatura-card">
+          <div class="card-header-custom">
+            <h3 class="candidate-name">
+              <i class="bi bi-trophy-fill"></i>
+              <%= candidatura.nome_urna %>
+            </h3>
+          </div>
+          <div class="card-body-custom">
+            <!-- Início do Partial _candidatura.html.erb -->
+            <div id="<%= dom_id candidatura %>" class="candidatura-content">
+              <div class="photos-section">
+                <div class="photo-container leader-photo">
+                  <% if candidatura.foto_lider.present? %>
+                    <%= image_tag candidatura.foto_lider, class: "candidate-photo", alt: candidatura.nome_candidato %>
+                  <% else %>
+                    <div class="photo-placeholder">
+                      <i class="bi bi-person-circle"></i>
+                    </div>
+                  <% end %>
+                  <div class="photo-label">
+                    <i class="bi bi-star-fill"></i> Líder
+                  </div>
+                </div>
+
+                <div class="divider-vertical">
+                  <i class="bi bi-plus-lg"></i>
+                </div>
+
+                <div class="photo-container vice-photo">
+                  <% if candidatura.foto_vice.present? %>
+                    <%= image_tag candidatura.foto_vice, class: "candidate-photo", alt: candidatura.vice_lider %>
+                  <% else %>
+                    <div class="photo-placeholder">
+                      <i class="bi bi-person-circle"></i>
+                    </div>
+                  <% end %>
+                  <div class="photo-label">
+                    <i class="bi bi-award-fill"></i> Vice
+                  </div>
+                </div>
+              </div>
+
+              <div class="candidate-info">
+                <div class="info-row">
+                  <span class="info-icon"><i class="bi bi-person-badge"></i></span>
+                  <div class="info-content">
+                    <span class="info-label">Líder:</span>
+                    <span class="info-value"><%= candidatura.nome_candidato %></span>
+                  </div>
+                </div>
+
+                <div class="info-row">
+                  <span class="info-icon"><i class="bi bi-card-text"></i></span>
+                  <div class="info-content">
+                    <span class="info-label">Nome na Urna:</span>
+                    <span class="info-value ballot-name"><%= candidatura.nome_urna %></span>
+                  </div>
+                </div>
+
+                <div class="info-row">
+                  <span class="info-icon"><i class="bi bi-people"></i></span>
+                  <div class="info-content">
+                    <span class="info-label">Vice-Líder:</span>
+                    <span class="info-value"><%= candidatura.vice_lider %></span>
+                  </div>
+                </div>
+
+                <div class="info-row">
+                  <span class="info-icon"><i class="bi bi-card-text"></i></span>
+                  <div class="info-content">
+                    <span class="info-label">Vice na Urna:</span>
+                    <span class="info-value ballot-name"><%= candidatura.nome_urna_vice %></span>
+                  </div>
+                </div>
+
+                <div class="info-row turma-row">
+                  <span class="info-icon"><i class="bi bi-mortarboard-fill"></i></span>
+                  <div class="info-content">
+                    <span class="info-label">Turma:</span>
+                    <span class="info-value turma-badge"><%= candidatura.turma.nome %></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer-custom">
+            <%= link_to candidatura, class: "btn btn-view" do %>
+              <i class="bi bi-eye-fill"></i> Ver Detalhes
+            <% end %>
+
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="text-center mt-5">
+    <%= link_to new_candidatura_path, class: "btn btn-new-candidatura" do %>
+      <i class="bi bi-plus-circle"></i> Nova Candidatura
+    <% end %>
+  </div>
+</div>

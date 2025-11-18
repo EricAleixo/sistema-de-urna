@@ -1,47 +1,172 @@
-<p>
-  <strong>Nome do Candidato:</strong>
-  <%= @candidatura.nome_candidato %>
-</p>
+<% content_for :title, "Candidatura - #{@candidatura.nome_urna}" %>
 
-<p>
-  <strong>Nome para Urna:</strong>
-  <%= @candidatura.nome_urna %>
-</p>
+<div class="container my-5">
+  <div class="new-breadcrumb">
+    <%= link_to candidaturas_path, class: "breadcrumb-link" do %>
+      <i class="bi bi-house-fill"></i> Candidaturas
+    <% end %>
+    <i class="bi bi-chevron-right"></i>
+    <span class="breadcrumb-current"><%= @candidatura.nome_urna %></span>
+  </div>
+  <!-- Botão Voltar -->
+  <div class="mb-4">
+    <%= link_to candidaturas_path, class: "btn-back" do %>
+      <i class="bi bi-arrow-left-circle"></i> Voltar para Candidaturas
+    <% end %>
+  </div>
 
-<p>
-  <strong>Turma:</strong>
-  <%= @candidatura.turma.nome %>
-</p>
+  <div class="candidatura-show-card">
+    <!-- Header da Candidatura -->
+    <div class="show-header">
+      <div class="show-header-content">
+        <div class="trophy-icon">
+          <i class="bi bi-trophy-fill"></i>
+        </div>
+        <div>
+          <h1 class="show-title"><%= @candidatura.nome_urna %></h1>
+          <p class="show-subtitle">
+            <i class="bi bi-mortarboard-fill"></i>
+            <%= @candidatura.turma.nome %>
+          </p>
+        </div>
+      </div>
+    </div>
 
-<p>
-  <strong>Vice-líder:</strong>
-  <%= @candidatura.vice_lider %>
-</p>
+    <!-- Seção de Fotos -->
+    <div class="show-photos-section">
+      <div class="show-photo-card">
+        <div class="photo-header leader-header">
+          <i class="bi bi-star-fill"></i>
+          <span>Líder</span>
+        </div>
+        <div class="photo-body">
+          <% if @candidatura.foto_lider.attached? %>
+            <%= image_tag @candidatura.foto_lider, class: "show-candidate-photo", alt: @candidatura.nome_candidato %>
+          <% else %>
+            <div class="show-photo-placeholder">
+              <i class="bi bi-person-circle"></i>
+              <p>Sem foto</p>
+            </div>
+          <% end %>
+        </div>
+        <div class="photo-info">
+          <h3 class="candidate-full-name"><%= @candidatura.nome_candidato %></h3>
+          <p class="candidate-ballot-name">
+            <i class="bi bi-card-text"></i>
+            <%= @candidatura.nome_urna %>
+          </p>
+        </div>
+      </div>
 
-<p>
-  <strong>Nome para Urna do Vice:</strong>
-  <%= @candidatura.nome_urna_vice %>
-</p>
+      <div class="show-divider">
+        <i class="bi bi-plus-lg"></i>
+      </div>
 
-<p>
-  <strong>Foto do Líder:</strong>
-  <% if @candidatura.foto_lider.attached? %>
-    <%= image_tag @candidatura.foto_lider, class: "img-thumbnail" %>
-  <% else %>
-    Não há foto.
-  <% end %>
-</p>
+      <div class="show-photo-card">
+        <div class="photo-header vice-header">
+          <i class="bi bi-award-fill"></i>
+          <span>Vice-Líder</span>
+        </div>
+        <div class="photo-body">
+          <% if @candidatura.foto_vice.attached? %>
+            <%= image_tag @candidatura.foto_vice, class: "show-candidate-photo", alt: @candidatura.vice_lider %>
+          <% else %>
+            <div class="show-photo-placeholder">
+              <i class="bi bi-person-circle"></i>
+              <p>Sem foto</p>
+            </div>
+          <% end %>
+        </div>
+        <div class="photo-info">
+          <h3 class="candidate-full-name"><%= @candidatura.vice_lider %></h3>
+          <p class="candidate-ballot-name">
+            <i class="bi bi-card-text"></i>
+            <%= @candidatura.nome_urna_vice %>
+          </p>
+        </div>
+      </div>
+    </div>
 
-<p>
-  <strong>Foto do Vice-líder:</strong>
-  <% if @candidatura.foto_vice.attached? %>
-    <%= image_tag @candidatura.foto_vice, class: "img-thumbnail" %>
-  <% else %>
-    Não há foto.
-  <% end %>
-</p>
+    <!-- Informações Detalhadas -->
+    <div class="show-details-section">
+      <h2 class="section-title">
+        <i class="bi bi-info-circle-fill"></i>
+        Informações da Candidatura
+      </h2>
+      
+      <div class="details-grid">
+        <div class="detail-item">
+          <div class="detail-icon">
+            <i class="bi bi-person-badge-fill"></i>
+          </div>
+          <div class="detail-content">
+            <span class="detail-label">Nome Completo do Líder</span>
+            <span class="detail-value"><%= @candidatura.nome_candidato %></span>
+          </div>
+        </div>
 
-<!-- Link para editar a candidatura -->
-<p>
-  <%= link_to 'Editar Candidatura', edit_candidatura_path(@candidatura), class: 'btn btn-primary' %>
-</p>
+        <div class="detail-item">
+          <div class="detail-icon">
+            <i class="bi bi-card-heading"></i>
+          </div>
+          <div class="detail-content">
+            <span class="detail-label">Nome na Urna (Líder)</span>
+            <span class="detail-value highlight"><%= @candidatura.nome_urna %></span>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-icon">
+            <i class="bi bi-people-fill"></i>
+          </div>
+          <div class="detail-content">
+            <span class="detail-label">Nome Completo do Vice</span>
+            <span class="detail-value"><%= @candidatura.vice_lider %></span>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-icon">
+            <i class="bi bi-card-heading"></i>
+          </div>
+          <div class="detail-content">
+            <span class="detail-label">Nome na Urna (Vice)</span>
+            <span class="detail-value highlight"><%= @candidatura.nome_urna_vice %></span>
+          </div>
+        </div>
+
+        <div class="detail-item turma-item">
+          <div class="detail-icon">
+            <i class="bi bi-mortarboard-fill"></i>
+          </div>
+          <div class="detail-content">
+            <span class="detail-label">Turma</span>
+            <span class="detail-value turma-value"><%= @candidatura.turma.nome %></span>
+          </div>
+        </div>
+
+        <div class="detail-item votes-item">
+          <div class="detail-icon">
+            <i class="bi bi-hand-thumbs-up-fill"></i>
+          </div>
+          <div class="detail-content">
+            <span class="detail-label">Total de Votos</span>
+            <span class="detail-value votes-value"><%= @candidatura.votos %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botões de Ação -->
+    <div class="show-actions">
+      <%= link_to edit_candidatura_path(@candidatura), class: "btn-show-edit" do %>
+        <i class="bi bi-pencil-square"></i> Editar Candidatura
+      <% end %>
+      <%= link_to candidatura_path(@candidatura), method: :delete, 
+          data: { confirm: 'Tem certeza que deseja excluir esta candidatura?' }, 
+          class: "btn-show-delete" do %>
+        <i class="bi bi-trash3-fill"></i> Excluir
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,12 +1,46 @@
-<% content_for :title, "Editing candidatura" %>
+<% content_for :title, "Editar Candidatura - #{@candidatura.nome_urna}" %>
 
-<h1>Editing candidatura</h1>
+<div class="container my-5">
+  <!-- Breadcrumb / Navegação -->
+  <div class="edit-breadcrumb">
+    <%= link_to candidaturas_path, class: "breadcrumb-link" do %>
+      <i class="bi bi-house-fill"></i> Candidaturas
+    <% end %>
+    <i class="bi bi-chevron-right"></i>
+    <%= link_to @candidatura, class: "breadcrumb-link" do %>
+      <%= @candidatura.nome_urna %>
+    <% end %>
+    <i class="bi bi-chevron-right"></i>
+    <span class="breadcrumb-current">Editar</span>
+  </div>
 
-<%= render "form", candidatura: @candidatura %>
+  <!-- Header da Página de Edição -->
+  <div class="edit-page-header">
+    <div class="edit-header-icon">
+      <i class="bi bi-pencil-square"></i>
+    </div>
+    <div class="edit-header-content">
+      <h1 class="edit-title">Editar Candidatura</h1>
+      <p class="edit-subtitle">
+        <i class="bi bi-trophy-fill"></i>
+        Candidato: <strong><%= @candidatura.nome_urna %></strong>
+      </p>
+    </div>
+  </div>
 
-<br>
+  <!-- Formulário -->
+  <%= render "form", candidatura: @candidatura %>
 
-<div>
-  <%= link_to "Show this candidatura", @candidatura %> |
-  <%= link_to "Back to candidaturas", candidaturas_path %>
+  <!-- Botões de Navegação Inferior -->
+  <div class="edit-bottom-actions">
+    <%= link_to @candidatura, class: "btn-bottom-show" do %>
+      <i class="bi bi-eye-fill"></i>
+      Ver Candidatura
+    <% end %>
+    
+    <%= link_to candidaturas_path, class: "btn-bottom-back" do %>
+      <i class="bi bi-arrow-left-circle"></i>
+      Voltar para Lista
+    <% end %>
+  </div>
 </div>

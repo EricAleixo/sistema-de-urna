@@ -1,36 +1,75 @@
-<div id="<%= dom_id candidatura %>">
-  <p>
-    <strong>Nome candidato:</strong>
-    <%= candidatura.nome_candidato %>
-  </p>
+<div id="<%= dom_id candidatura %>" class="candidatura-content">
+  <div class="photos-section">
+    <div class="photo-container leader-photo">
+      <% if candidatura.foto_lider.present? %>
+        <%= image_tag candidatura.foto_lider, class: "candidate-photo", alt: candidatura.nome_candidato %>
+      <% else %>
+        <div class="photo-placeholder">
+          <i class="bi bi-person-circle"></i>
+        </div>
+      <% end %>
+      <div class="photo-label">
+        <i class="bi bi-star-fill"></i> Líder
+      </div>
+    </div>
 
-  <p>
-    <strong>Nome urna:</strong>
-    <%= candidatura.nome_urna %>
-  </p>
+    <div class="divider-vertical">
+      <i class="bi bi-plus-lg"></i>
+    </div>
 
-  <p>
-    <strong>Turma:</strong>
-    <%= candidatura.turma_id %>
-  </p>
+    <div class="photo-container vice-photo">
+      <% if candidatura.foto_vice.present? %>
+        <%= image_tag candidatura.foto_vice, class: "candidate-photo", alt: candidatura.vice_lider %>
+      <% else %>
+        <div class="photo-placeholder">
+          <i class="bi bi-person-circle"></i>
+        </div>
+      <% end %>
+      <div class="photo-label">
+        <i class="bi bi-award-fill"></i> Vice
+      </div>
+    </div>
+  </div>
 
-  <p>
-    <strong>Vice líder:</strong>
-    <%= candidatura.vice_lider %>
-  </p>
+  <div class="candidate-info">
+    <div class="info-row">
+      <span class="info-icon"><i class="bi bi-person-badge"></i></span>
+      <div class="info-content">
+        <span class="info-label">Líder:</span>
+        <span class="info-value"><%= candidatura.nome_candidato %></span>
+      </div>
+    </div>
 
-  <p>
-    <strong>Nome urna vice:</strong>
-    <%= candidatura.nome_urna_vice %>
-  </p>
+    <div class="info-row">
+      <span class="info-icon"><i class="bi bi-card-text"></i></span>
+      <div class="info-content">
+        <span class="info-label">Nome na Urna:</span>
+        <span class="info-value ballot-name"><%= candidatura.nome_urna %></span>
+      </div>
+    </div>
 
-  <p>
-    <strong>Foto líder:</strong>
-    <%= image_tag candidatura.foto_lider if candidatura.foto_lider.present? %>
-  </p>
+    <div class="info-row">
+      <span class="info-icon"><i class="bi bi-people"></i></span>
+      <div class="info-content">
+        <span class="info-label">Vice-Líder:</span>
+        <span class="info-value"><%= candidatura.vice_lider %></span>
+      </div>
+    </div>
 
-  <p>
-    <strong>Foto vice:</strong>
-    <%= image_tag candidatura.foto_vice if candidatura.foto_vice.present? %>
-  </p>
+    <div class="info-row">
+      <span class="info-icon"><i class="bi bi-card-text"></i></span>
+      <div class="info-content">
+        <span class="info-label">Vice na Urna:</span>
+        <span class="info-value ballot-name"><%= candidatura.nome_urna_vice %></span>
+      </div>
+    </div>
+
+    <div class="info-row turma-row">
+      <span class="info-icon"><i class="bi bi-mortarboard-fill"></i></span>
+      <div class="info-content">
+        <span class="info-label">Turma:</span>
+        <span class="info-value turma-badge"><%= candidatura.turma&.nome %></span>
+      </div>
+    </div>
+  </div>
 </div>
