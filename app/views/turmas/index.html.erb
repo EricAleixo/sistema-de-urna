@@ -61,105 +61,106 @@
       <div class="turmas-grid">
         <% @turmas.each do |turma| %>
           <div class="turma-card">
-  <div class="turma-card-header">
-    <div class="turma-icon">
-      <i class="bi bi-mortarboard-fill"></i>
-    </div>
-    <div class="turma-info">
-      <h4 class="turma-name"><%= turma.nome %></h4>
-      <span class="turma-id">ID: <%= turma.id %></span>
-    </div>
-  </div>
-
-  <div class="turma-card-stats">
-    <div class="turma-stat">
-      <i class="bi bi-trophy"></i>
-      <span><%= turma.candidaturas.count %> Candidaturas</span>
-    </div>
-
-    <div class="turma-stat">
-      <i class="bi bi-graph-up-arrow"></i>
-      <span><%= turma.candidaturas.sum(:votos) %> Votos</span>
-    </div>
-
-    <div class="turma-stat">
-      <i class="bi bi-x-circle"></i>
-      <span><%= turma.votos_em_branco || 0 %> Votos em Branco</span>
-    </div>
-  </div>
-
-  <!-- Preview de Candidaturas -->
-  <% if turma.candidaturas.any? %>
-    <div class="turma-candidaturas-preview">
-      <div class="preview-header">
-        <i class="bi bi-people"></i>
-        <span>Candidaturas</span>
-      </div>
-      <div class="preview-list">
-        <% turma.candidaturas.limit(3).each do |candidatura| %>
-          <div class="preview-item">
-            <div class="preview-photos">
-              <% if candidatura.foto_lider.attached? %>
-                <%= image_tag candidatura.foto_lider, class: "preview-photo" %>
-              <% else %>
-                <div class="preview-photo-placeholder">
-                  <i class="bi bi-person"></i>
-                </div>
-              <% end %>
-
-              <% if candidatura.foto_vice.attached? %>
-                <%= image_tag candidatura.foto_vice, class: "preview-photo" %>
-              <% else %>
-                <div class="preview-photo-placeholder">
-                  <i class="bi bi-person"></i>
-                </div>
-              <% end %>
+            <div class="turma-card-header">
+              <div class="turma-icon">
+                <i class="bi bi-mortarboard-fill"></i>
+              </div>
+              <div class="turma-info">
+                <h4 class="turma-name"><%= turma.nome %></h4>
+                <span class="turma-id">ID: <%= turma.id %></span>
+              </div>
             </div>
 
-            <div class="preview-info">
-              <span class="preview-name"><%= candidatura.nome_urna %></span>
-              <span class="preview-votes">
-                <i class="bi bi-hand-thumbs-up"></i>
-                <%= candidatura.votos %>
-              </span>
-            </div>
-          </div>
-        <% end %>
+            <div class="turma-card-stats">
+              <div class="turma-stat">
+                <i class="bi bi-trophy"></i>
+                <span><%= turma.candidaturas.count %> Candidaturas</span>
+              </div>
 
-        <% if turma.candidaturas.count > 3 %>
-          <div class="preview-more">
-            <%= link_to turma, class: "preview-more-link" do %>
-              <i class="bi bi-plus-circle"></i>
-              Mais <%= turma.candidaturas.count - 3 %> candidatura<%= 's' if turma.candidaturas.count - 3 > 1 %>
+              <div class="turma-stat">
+                <i class="bi bi-graph-up-arrow"></i>
+                <span><%= turma.candidaturas.sum(:votos) %> Votos</span>
+              </div>
+
+              <div class="turma-stat">
+                <i class="bi bi-x-circle"></i>
+                <span><%= turma.votos_em_branco || 0 %> Votos em Branco</span>
+              </div>
+            </div>
+
+            <!-- Preview de Candidaturas -->
+            <% if turma.candidaturas.any? %>
+              <div class="turma-candidaturas-preview">
+                <div class="preview-header">
+                  <i class="bi bi-people"></i>
+                  <span>Candidaturas</span>
+                </div>
+                <div class="preview-list">
+                  <% turma.candidaturas.limit(3).each do |candidatura| %>
+                    <div class="preview-item">
+                      <div class="preview-photos">
+                        <% if candidatura.foto_lider.attached? %>
+                          <%= image_tag candidatura.foto_lider, class: "preview-photo" %>
+                        <% else %>
+                          <div class="preview-photo-placeholder">
+                            <i class="bi bi-person"></i>
+                          </div>
+                        <% end %>
+
+                        <% if candidatura.vice_lider.present? %>
+                          <% if candidatura.foto_vice.attached? %>
+                            <%= image_tag candidatura.foto_vice, class: "preview-photo" %>
+                          <% else %>
+                            <div class="preview-photo-placeholder">
+                              <i class="bi bi-person"></i>
+                            </div>
+                          <% end %>
+                        <% end %>
+                      </div>
+
+                      <div class="preview-info">
+                        <span class="preview-name"><%= candidatura.nome_urna %></span>
+                        <span class="preview-votes">
+                          <i class="bi bi-hand-thumbs-up"></i>
+                          <%= candidatura.votos %>
+                        </span>
+                      </div>
+                    </div>
+                  <% end %>
+
+                  <% if turma.candidaturas.count > 3 %>
+                    <div class="preview-more">
+                      <%= link_to turma, class: "preview-more-link" do %>
+                        <i class="bi bi-plus-circle"></i>
+                        Mais <%= turma.candidaturas.count - 3 %> candidatura<%= 's' if turma.candidaturas.count - 3 > 1 %>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% else %>
+              <div class="turma-empty-preview">
+                <i class="bi bi-inbox"></i>
+                <span>Nenhuma candidatura ainda</span>
+              </div>
             <% end %>
+
+            <div class="turma-card-actions">
+              <%= link_to turma, class: "btn-turma-show" do %>
+                <i class="bi bi-eye-fill"></i> Ver
+              <% end %>
+
+              <%= link_to edit_turma_path(turma), class: "btn-turma-edit" do %>
+                <i class="bi bi-pencil-square"></i> Editar
+              <% end %>
+
+              <%= link_to turma, method: :delete, 
+                  data: { confirm: 'Tem certeza que deseja excluir esta turma? Todas as candidaturas associadas serão perdidas!' }, 
+                  class: "btn-turma-delete" do %>
+                <i class="bi bi-trash3-fill"></i>
+              <% end %>
+            </div>
           </div>
-        <% end %>
-      </div>
-    </div>
-  <% else %>
-    <div class="turma-empty-preview">
-      <i class="bi bi-inbox"></i>
-      <span>Nenhuma candidatura ainda</span>
-    </div>
-  <% end %>
-
-  <div class="turma-card-actions">
-    <%= link_to turma, class: "btn-turma-show" do %>
-      <i class="bi bi-eye-fill"></i> Ver
-    <% end %>
-
-    <%= link_to edit_turma_path(turma), class: "btn-turma-edit" do %>
-      <i class="bi bi-pencil-square"></i> Editar
-    <% end %>
-
-    <%= link_to turma, method: :delete, 
-        data: { confirm: 'Tem certeza que deseja excluir esta turma? Todas as candidaturas associadas serão perdidas!' }, 
-        class: "btn-turma-delete" do %>
-      <i class="bi bi-trash3-fill"></i>
-    <% end %>
-  </div>
-</div>
-  
         <% end %>
       </div>
     <% else %>

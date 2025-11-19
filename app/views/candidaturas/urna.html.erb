@@ -2,70 +2,150 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Urna Eletrônica</title>
-  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urna Eletrônica - <%= @turma.nome %></title>
   <%= stylesheet_link_tag "urna", "data-turbo-track": "reload" %>
-
-  <!-- CSS do SweetAlert2 -->
   <%= stylesheet_link_tag "sweetalert2.min", "data-turbo-track": "reload" %>
   <%= javascript_include_tag "sweetalert2.all.min", "data-turbo-track": "reload", defer: true %>
-
-
 </head>
-<body><br>
-  <h2 class="text-center">Urna Eletrônica - Turma <%= @turma.nome %></h2>
-  <mark class="text-center">
-  <h3 class="text-center pulse" style=" padding: 10px; border-radius: 8px;">
-    Escolha quem vai liderar a turma.
-  </h3>
-   <h3 class="text-center pulse" style=" padding: 10px; border-radius: 8px;">
-    Ao escolher seu candidato(a), confirme seu voto! ✅
-  </h3>
-</mark>
-
-  <div class="urna-container">
-    <div id="visualizacao" class="text-center mb-4">
-      <div class="candidato-info">
-        <div id="foto-lider"></div>
-        <div>
-          <p id="nome-urna" class="font-weight-bold"></p>
-          <p id="nome-vice"></p>
-        </div>
+<body>
+  <div class="urna-page-wrapper">
+    <!-- Header da Urna -->
+    <div class="urna-header">
+      <div class="urna-logo">
+        <i class="bi bi-shield-fill-check"></i>
       </div>
-      <div id="mensagem-branco" class="text-center">Confirma voto em branco?</div>
+      <div class="urna-header-content">
+        <h1 class="urna-title">URNA ELETRÔNICA</h1>
+        <h2 class="urna-turma">Turma: <%= @turma.nome %></h2>
+      </div>
     </div>
 
-    <%= form_with url: registrar_voto_candidaturas_path, method: :post, id: "form-voto" do %>
-      <%= hidden_field_tag :candidatura_id, "", id: "candidatura_id" %>
-      <%= hidden_field_tag :turma_id, @turma.id %>
-
-      <div class="candidatos-lista">
-        <% @candidaturas.each do |candidato| %>
-          <button type="button" class="btn btn-outline-light" onclick="selecionarCandidato('<%= candidato.id %>', '<%= candidato.nome_urna %>', '<%= candidato.nome_urna_vice %>', '<%= url_for(candidato.foto_lider) if candidato.foto_lider.attached? %>')">
-            <%= candidato.nome_urna %>
-            <% if candidato.nome_urna_vice.present? %>
-              - <%= candidato.nome_urna_vice %>
-            <% end %>
-          </button>
-        <% end %>
+    <!-- Instruções -->
+    <div class="urna-instrucoes">
+      <div class="instrucao-item">
+        <i class="bi bi-1-circle-fill"></i>
+        <span>Escolha seu candidato</span>
       </div>
+      <div class="instrucao-item">
+        <i class="bi bi-2-circle-fill"></i>
+        <span>Confira os dados</span>
+      </div>
+      <div class="instrucao-item">
+        <i class="bi bi-3-circle-fill"></i>
+        <span>Confirme seu voto</span>
+      </div>
+    </div>
 
-      <div class="botoes-finais mt-4">
-        <button type="button" class="btn btn-branco btn-lg" onclick="votarBranco()">BRANCO</button>
-        <button type="button" class="btn btn-corrigir btn-lg" onclick="corrigirVoto()">CORRIGIR</button>
-        <div id="confirmar-container">
-            <button type="submit" class="btn btn-success btn-lg w-100" onclick="tocarSom(event)">CONFIRMAR</button>
+    <!-- Container Principal da Urna -->
+    <div class="urna-main-container">
+      <!-- Visor (Tela de Visualização) -->
+      <div class="urna-visor">
+        <div class="visor-header">
+          <span class="visor-titulo">SEU VOTO</span>
+          <div class="visor-status" id="visor-status">
+            <i class="bi bi-circle-fill"></i>
+            <span>Selecione um candidato</span>
+          </div>
+        </div>
+
+        <div id="visualizacao" class="visor-content">
+          <div class="candidato-preview" id="candidato-preview">
+            <div class="preview-fotos">
+              <div id="foto-lider-container" class="foto-container">
+                <div class="foto-placeholder">
+                  <i class="bi bi-person-fill"></i>
+                </div>
+                <span class="foto-label">Líder</span>
+              </div>
+              <div id="foto-vice-container" class="foto-container" style="display: none;">
+                <div class="foto-placeholder">
+                  <i class="bi bi-person-fill"></i>
+                </div>
+                <span class="foto-label">Vice</span>
+              </div>
+            </div>
+            <div class="preview-info">
+              <h3 id="nome-urna" class="preview-nome"></h3>
+              <p id="nome-vice" class="preview-vice"></p>
+            </div>
+          </div>
+
+          <div id="mensagem-branco" class="mensagem-branco">
+            <i class="bi bi-file-earmark-x"></i>
+            <h3>VOTO EM BRANCO</h3>
+            <p>Você está votando em branco</p>
+          </div>
+
+          <div id="mensagem-inicial" class="mensagem-inicial">
+            <i class="bi bi-hand-index-thumb"></i>
+            <h3>Escolha seu candidato</h3>
+            <p>Clique em um candidato ao lado para iniciar</p>
+          </div>
         </div>
       </div>
 
-    <% end %>
+      <!-- Teclado (Lista de Candidatos + Botões) -->
+      <div class="urna-teclado">
+        <%= form_with url: registrar_voto_candidaturas_path, method: :post, id: "form-voto" do %>
+          <%= hidden_field_tag :candidatura_id, "", id: "candidatura_id" %>
+          <%= hidden_field_tag :turma_id, @turma.id %>
+
+          <div class="teclado-header mb-2">
+            <i class="bi bi-list-ul"></i>
+            <span>CANDIDATOS</span>
+          </div>
+
+          <div class="candidatos-lista">
+            <% @candidaturas.each_with_index do |candidato, index| %>
+              <button type="button" 
+                      class="btn-candidato" 
+                      data-numero="<%= index + 1 %>"
+                      onclick="selecionarCandidato(
+                        '<%= candidato.id %>', 
+                        '<%= candidato.nome_urna %>', 
+                        '<%= candidato.nome_candidato %>',
+                        '<%= candidato.vice_lider %>',
+                        '<%= candidato.nome_urna_vice %>', 
+                        '<%= url_for(candidato.foto_lider) if candidato.foto_lider.attached? %>',
+                        '<%= url_for(candidato.foto_vice) if candidato.foto_vice.attached? %>')">
+                <span class="candidato-numero"><%= index + 1 %></span>
+                <div class="candidato-dados">
+                  <span class="candidato-nome"><%= candidato.nome_urna %></span>
+                  <% if candidato.nome_urna_vice.present? %>
+                    <span class="candidato-vice">Vice: <%= candidato.nome_urna_vice %></span>
+                  <% end %>
+                </div>
+                <i class="bi bi-chevron-right"></i>
+              </button>
+            <% end %>
+          </div>
+
+          <div class="botoes-controle">
+            <button type="button" class="btn-urna btn-branco" onclick="votarBranco()">
+              <i class="bi bi-file-earmark-x"></i>
+              <span>BRANCO</span>
+            </button>
+            <button type="button" class="btn-urna btn-corrigir" onclick="corrigirVoto()">
+              <i class="bi bi-arrow-counterclockwise"></i>
+              <span>CORRIGIR</span>
+            </button>
+            <div id="confirmar-container">
+              <button type="submit" class="btn-urna btn-confirmar" onclick="tocarSom(event)">
+                <i class="bi bi-check-circle-fill"></i>
+                <span>CONFIRMAR</span>
+              </button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
 
   <script>
-
     function exibirBotaoConfirmar() {
-        const confirmarContainer = document.getElementById("confirmar-container");
-        confirmarContainer.style.display = "block";
+      const confirmarContainer = document.getElementById("confirmar-container");
+      confirmarContainer.style.display = "block";
     }
 
     let audio;
@@ -81,70 +161,129 @@
       }
     }
 
-    function selecionarCandidato(id, nome, nomeVice, fotoLiderUrl) {
+    function selecionarCandidato(id, nomeUrna, nomeCandidato, viceNome, nomeUrnaVice, fotoLiderUrl, fotoViceUrl) {
       verificarAudio();
+      
+      // Atualiza campo hidden
       document.getElementById('candidatura_id').value = id;
-      document.getElementById('nome-urna').textContent = nome;
-      document.getElementById('nome-vice').textContent = nomeVice ? 'Vice: ' + nomeVice : '';
-      const fotoLider = document.getElementById('foto-lider');
-      fotoLider.innerHTML = fotoLiderUrl ? `<img src="${fotoLiderUrl}" class="foto-candidato">` : '';
+      
+      // Atualiza informações do líder
+      document.getElementById('nome-urna').textContent = nomeUrna;
+      
+      // Atualiza informações do vice (apenas se existir)
+      const nomeViceElement = document.getElementById('nome-vice');
+      const fotoViceContainer = document.getElementById('foto-vice-container');
+      
+      if (viceNome && viceNome.trim() !== '') {
+        nomeViceElement.textContent = nomeCandidato + ' & ' + viceNome;
+        nomeViceElement.style.display = 'block';
+        
+        // Exibe container da foto do vice
+        fotoViceContainer.style.display = 'flex';
+        
+        // Atualiza foto do vice se existir
+        if (fotoViceUrl && fotoViceUrl.trim() !== '') {
+          fotoViceContainer.innerHTML = `<img src="${fotoViceUrl}" class="foto-candidato"><span class="foto-label">Vice</span>`;
+        } else {
+          fotoViceContainer.innerHTML = '<div class="foto-placeholder"><i class="bi bi-person-fill"></i></div><span class="foto-label">Vice</span>';
+        }
+      } else {
+        // Esconde informações do vice
+        nomeViceElement.textContent = nomeCandidato;
+        nomeViceElement.style.display = 'block';
+        fotoViceContainer.style.display = 'none';
+      }
+      
+      // Atualiza foto do líder
+      const fotoLiderContainer = document.getElementById('foto-lider-container');
+      if (fotoLiderUrl && fotoLiderUrl.trim() !== '') {
+        fotoLiderContainer.innerHTML = `<img src="${fotoLiderUrl}" class="foto-candidato"><span class="foto-label">Líder</span>`;
+      } else {
+        fotoLiderContainer.innerHTML = '<div class="foto-placeholder"><i class="bi bi-person-fill"></i></div><span class="foto-label">Líder</span>';
+      }
+      
+      // Exibe preview e esconde mensagens
+      document.getElementById('candidato-preview').style.display = 'flex';
       document.getElementById('mensagem-branco').style.display = 'none';
+      document.getElementById('mensagem-inicial').style.display = 'none';
       document.getElementById('confirmar-container').style.display = 'block';
+      
+      // Atualiza status
+      const status = document.getElementById('visor-status');
+      status.innerHTML = '<i class="bi bi-check-circle-fill"></i><span>Candidato selecionado</span>';
+      status.classList.add('status-pronto');
     }
 
     function votarBranco() {
       verificarAudio();
+      
       document.getElementById('candidatura_id').value = '';
-      document.getElementById('nome-urna').textContent = 'Voto em Branco';
-      document.getElementById('nome-vice').textContent = '';
-      document.getElementById('foto-lider').innerHTML = '';
-      document.getElementById('mensagem-branco').style.display = 'block';
+      document.getElementById('candidato-preview').style.display = 'none';
+      document.getElementById('mensagem-inicial').style.display = 'none';
+      document.getElementById('mensagem-branco').style.display = 'flex';
       document.getElementById('confirmar-container').style.display = 'block';
+      
+      const status = document.getElementById('visor-status');
+      status.innerHTML = '<i class="bi bi-file-earmark-x"></i><span>Voto em branco</span>';
+      status.classList.add('status-branco');
     }
 
     function corrigirVoto() {
       verificarAudio();
+      
       document.getElementById('candidatura_id').value = '';
       document.getElementById('nome-urna').textContent = '';
       document.getElementById('nome-vice').textContent = '';
-      document.getElementById('foto-lider').innerHTML = '';
+      
+      // Reset fotos
+      const fotoLiderContainer = document.getElementById('foto-lider-container');
+      const fotoViceContainer = document.getElementById('foto-vice-container');
+      fotoLiderContainer.innerHTML = '<div class="foto-placeholder"><i class="bi bi-person-fill"></i></div><span class="foto-label">Líder</span>';
+      fotoViceContainer.innerHTML = '<div class="foto-placeholder"><i class="bi bi-person-fill"></i></div><span class="foto-label">Vice</span>';
+      fotoViceContainer.style.display = 'none';
+      
+      document.getElementById('candidato-preview').style.display = 'none';
       document.getElementById('mensagem-branco').style.display = 'none';
+      document.getElementById('mensagem-inicial').style.display = 'flex';
       document.getElementById('confirmar-container').style.display = 'none';
+      
+      const status = document.getElementById('visor-status');
+      status.innerHTML = '<i class="bi bi-circle-fill"></i><span>Selecione um candidato</span>';
+      status.classList.remove('status-pronto', 'status-branco');
     }
- function tocarSom(e) {
-    e.preventDefault();
-    verificarAudio();
 
-    Swal.fire({
-      title: 'Processando...',
-      html: 'Por favor, aguarde.',
-      allowOutsideClick: false,
-      showConfirmButton: false,
-      didOpen: () => { Swal.showLoading(); }
-    });
+    function tocarSom(e) {
+      e.preventDefault();
+      verificarAudio();
 
-    audio.currentTime = 0;
-    audio.play().then(() => {
-      audio.onended = () => {
+      Swal.fire({
+        title: 'Processando...',
+        html: 'Por favor, aguarde.',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => { Swal.showLoading(); }
+      });
+
+      audio.currentTime = 0;
+      audio.play().then(() => {
+        audio.onended = () => {
+          Swal.close();
+
+          Swal.fire({
+            title: 'FIM',
+            html: '<h3>Voto computado com sucesso! ✅</h3>',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            allowOutsideClick: false
+          }).then(() => {
+            document.getElementById('form-voto').submit();
+          });
+        };
+      }).catch(() => {
         Swal.close();
-
-        // Mostra mensagem final
-        Swal.fire({
-          title: 'FIM',
-          html: '<h3>Voto computado com sucesso! ✅</h3>',
-          icon: 'success',
-          confirmButtonText: 'OK',
-          allowOutsideClick: false
-        }).then(() => {
-          // Só segue o fluxo após o eleitor clicar em OK
-          document.getElementById('form-voto').submit();
-        });
-      };
-    }).catch(() => {
-      Swal.close();
-      document.getElementById('form-voto').submit();
-    });
-  }
+        document.getElementById('form-voto').submit();
+      });
+    }
   </script>
 </body>
 </html>

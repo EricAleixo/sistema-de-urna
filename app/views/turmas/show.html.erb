@@ -82,12 +82,14 @@
                   </div>
                 <% end %>
 
-                <% if candidatura.foto_vice.attached? %>
-                  <%= image_tag candidatura.foto_vice, class: "turma-candidatura-photo" %>
-                <% else %>
-                  <div class="turma-photo-placeholder">
-                    <i class="bi bi-person-circle"></i>
-                  </div>
+                <% if candidatura.vice_lider.present? %>
+                  <% if candidatura.foto_vice.attached? %>
+                    <%= image_tag candidatura.foto_vice, class: "turma-candidatura-photo" %>
+                  <% else %>
+                    <div class="turma-photo-placeholder">
+                      <i class="bi bi-person-circle"></i>
+                    </div>
+                  <% end %>
                 <% end %>
               </div>
 
@@ -95,7 +97,9 @@
                 <h4 class="turma-candidatura-name"><%= candidatura.nome_urna %></h4>
                 <div class="turma-candidatura-members">
                   <span><i class="bi bi-star-fill"></i> <%= candidatura.nome_candidato %></span>
-                  <span><i class="bi bi-award-fill"></i> <%= candidatura.vice_lider %></span>
+                  <% if candidatura.vice_lider.present? %>
+                    <span><i class="bi bi-award-fill"></i> <%= candidatura.vice_lider %></span>
+                  <% end %>
                 </div>
                 <div class="turma-candidatura-votos">
                   <i class="bi bi-hand-thumbs-up-fill"></i>

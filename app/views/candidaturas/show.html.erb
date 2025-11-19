@@ -58,33 +58,35 @@
         </div>
       </div>
 
-      <div class="show-divider">
-        <i class="bi bi-plus-lg"></i>
-      </div>
+      <% if @candidatura.vice_lider.present? %>
+        <div class="show-divider">
+          <i class="bi bi-plus-lg"></i>
+        </div>
 
-      <div class="show-photo-card">
-        <div class="photo-header vice-header">
-          <i class="bi bi-award-fill"></i>
-          <span>Vice-Líder</span>
+        <div class="show-photo-card">
+          <div class="photo-header vice-header">
+            <i class="bi bi-award-fill"></i>
+            <span>Vice-Líder</span>
+          </div>
+          <div class="photo-body">
+            <% if @candidatura.foto_vice.attached? %>
+              <%= image_tag @candidatura.foto_vice, class: "show-candidate-photo", alt: @candidatura.vice_lider %>
+            <% else %>
+              <div class="show-photo-placeholder">
+                <i class="bi bi-person-circle"></i>
+                <p>Sem foto</p>
+              </div>
+            <% end %>
+          </div>
+          <div class="photo-info">
+            <h3 class="candidate-full-name"><%= @candidatura.vice_lider %></h3>
+            <p class="candidate-ballot-name">
+              <i class="bi bi-card-text"></i>
+              <%= @candidatura.nome_urna_vice %>
+            </p>
+          </div>
         </div>
-        <div class="photo-body">
-          <% if @candidatura.foto_vice.attached? %>
-            <%= image_tag @candidatura.foto_vice, class: "show-candidate-photo", alt: @candidatura.vice_lider %>
-          <% else %>
-            <div class="show-photo-placeholder">
-              <i class="bi bi-person-circle"></i>
-              <p>Sem foto</p>
-            </div>
-          <% end %>
-        </div>
-        <div class="photo-info">
-          <h3 class="candidate-full-name"><%= @candidatura.vice_lider %></h3>
-          <p class="candidate-ballot-name">
-            <i class="bi bi-card-text"></i>
-            <%= @candidatura.nome_urna_vice %>
-          </p>
-        </div>
-      </div>
+      <% end %>
     </div>
 
     <!-- Informações Detalhadas -->
@@ -115,23 +117,27 @@
           </div>
         </div>
 
-        <div class="detail-item">
+        <div class="detail-item <%= 'no-vice' unless @candidatura.vice_lider.present? %>">
           <div class="detail-icon">
             <i class="bi bi-people-fill"></i>
           </div>
           <div class="detail-content">
-            <span class="detail-label">Nome Completo do Vice</span>
-            <span class="detail-value"><%= @candidatura.vice_lider %></span>
+            <span class="detail-label">Vice-líder</span>
+            <span class="detail-value">
+              <%= @candidatura.vice_lider.presence || "Sem vice" %>
+            </span>
           </div>
         </div>
 
-        <div class="detail-item">
+        <div class="detail-item <%= 'no-vice' unless @candidatura.nome_urna_vice.present? %>">
           <div class="detail-icon">
             <i class="bi bi-card-heading"></i>
           </div>
           <div class="detail-content">
             <span class="detail-label">Nome na Urna (Vice)</span>
-            <span class="detail-value highlight"><%= @candidatura.nome_urna_vice %></span>
+            <span class="detail-value highlight">
+              <%= @candidatura.nome_urna_vice.presence || "Sem vice" %>
+            </span>
           </div>
         </div>
 
@@ -170,3 +176,4 @@
     </div>
   </div>
 </div>
+

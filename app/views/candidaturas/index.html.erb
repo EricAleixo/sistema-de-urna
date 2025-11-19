@@ -49,22 +49,24 @@
                   </div>
                 </div>
 
-                <div class="divider-vertical">
-                  <i class="bi bi-plus-lg"></i>
-                </div>
-
-                <div class="photo-container vice-photo">
-                  <% if candidatura.foto_vice.present? %>
-                    <%= image_tag candidatura.foto_vice, class: "candidate-photo", alt: candidatura.vice_lider %>
-                  <% else %>
-                    <div class="photo-placeholder">
-                      <i class="bi bi-person-circle"></i>
-                    </div>
-                  <% end %>
-                  <div class="photo-label">
-                    <i class="bi bi-award-fill"></i> Vice
+                <% if candidatura.vice_lider.present? %>
+                  <div class="divider-vertical">
+                    <i class="bi bi-plus-lg"></i>
                   </div>
-                </div>
+
+                  <div class="photo-container vice-photo">
+                    <% if candidatura.foto_vice.present? %>
+                      <%= image_tag candidatura.foto_vice, class: "candidate-photo", alt: candidatura.vice_lider %>
+                    <% else %>
+                      <div class="photo-placeholder">
+                        <i class="bi bi-person-circle"></i>
+                      </div>
+                    <% end %>
+                    <div class="photo-label">
+                      <i class="bi bi-award-fill"></i> Vice
+                    </div>
+                  </div>
+                <% end %>
               </div>
 
               <div class="candidate-info">
@@ -84,21 +86,23 @@
                   </div>
                 </div>
 
-                <div class="info-row">
-                  <span class="info-icon"><i class="bi bi-people"></i></span>
-                  <div class="info-content">
-                    <span class="info-label">Vice-Líder:</span>
-                    <span class="info-value"><%= candidatura.vice_lider %></span>
+                <% if candidatura.vice_lider.present? %>
+                  <div class="info-row">
+                    <span class="info-icon"><i class="bi bi-people"></i></span>
+                    <div class="info-content">
+                      <span class="info-label">Vice-Líder:</span>
+                      <span class="info-value"><%= candidatura.vice_lider %></span>
+                    </div>
                   </div>
-                </div>
 
-                <div class="info-row">
-                  <span class="info-icon"><i class="bi bi-card-text"></i></span>
-                  <div class="info-content">
-                    <span class="info-label">Vice na Urna:</span>
-                    <span class="info-value ballot-name"><%= candidatura.nome_urna_vice %></span>
+                  <div class="info-row">
+                    <span class="info-icon"><i class="bi bi-card-text"></i></span>
+                    <div class="info-content">
+                      <span class="info-label">Vice na Urna:</span>
+                      <span class="info-value ballot-name"><%= candidatura.nome_urna_vice %></span>
+                    </div>
                   </div>
-                </div>
+                <% end %>
 
                 <div class="info-row turma-row">
                   <span class="info-icon"><i class="bi bi-mortarboard-fill"></i></span>
