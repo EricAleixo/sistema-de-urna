@@ -1770,3 +1770,70 @@ $light-gray: #f8f9fa;
   color: #999;
   font-style: italic;
 }
+
+// Badge de Votos Destacado - Candidaturas
+.votos-badge-container {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px dashed #e0e0e0;
+  display: flex;
+  justify-content: center;
+}
+
+.votos-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+  }
+
+  i {
+    font-size: 1.25rem;
+    animation: pulse 2s infinite;
+  }
+}
+
+.votos-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  min-width: 2rem;
+  text-align: center;
+}
+
+.votos-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.9;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+// Responsivo
+@media (max-width: 768px) {
+  .votos-badge {
+    padding: 0.6rem 1.2rem;
+  }
+
+  .votos-number {
+    font-size: 1.25rem;
+  }
+}
