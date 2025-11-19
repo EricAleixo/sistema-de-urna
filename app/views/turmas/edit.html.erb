@@ -1,12 +1,46 @@
-<% content_for :title, "Editing turma" %>
+<% content_for :title, "Editar Turma - #{@turma.nome}" %>
 
-<h1>Editing turma</h1>
+<div class="container my-5">
+  <!-- Breadcrumb -->
+  <div class="turma-breadcrumb">
+    <%= link_to turmas_path, class: "breadcrumb-link" do %>
+      <i class="bi bi-house-fill"></i> Turmas
+    <% end %>
+    <i class="bi bi-chevron-right"></i>
+    <%= link_to @turma, class: "breadcrumb-link" do %>
+      <%= @turma.nome %>
+    <% end %>
+    <i class="bi bi-chevron-right"></i>
+    <span class="breadcrumb-current">Editar</span>
+  </div>
 
-<%= render "form", turma: @turma %>
+  <!-- Header da Página de Edição -->
+  <div class="turma-edit-page-header">
+    <div class="turma-edit-header-icon">
+      <i class="bi bi-pencil-square"></i>
+    </div>
+    <div class="turma-edit-header-content">
+      <h1 class="turma-edit-title">Editar Turma</h1>
+      <p class="turma-edit-subtitle">
+        <i class="bi bi-building"></i>
+        Turma: <strong><%= @turma.nome %></strong>
+      </p>
+    </div>
+  </div>
 
-<br>
+  <!-- Formulário -->
+  <%= render "form", turma: @turma %>
 
-<div>
-  <%= link_to "Show this turma", @turma %> |
-  <%= link_to "Back to turmas", turmas_path %>
+  <!-- Botões de Navegação Inferior -->
+  <div class="turma-edit-bottom-actions">
+    <%= link_to @turma, class: "btn-turma-bottom-show" do %>
+      <i class="bi bi-eye-fill"></i>
+      Ver Turma
+    <% end %>
+    
+    <%= link_to turmas_path, class: "btn-turma-bottom-back" do %>
+      <i class="bi bi-arrow-left-circle"></i>
+      Voltar para Lista
+    <% end %>
+  </div>
 </div>

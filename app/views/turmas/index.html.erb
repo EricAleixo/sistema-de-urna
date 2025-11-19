@@ -1,25 +1,176 @@
-<div class="container mt-5">
-  <h1 class="text-center">Lista de Turmas</h1>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @turmas.each do |turma| %>
-        <tr>
-          <td><%= turma.id %></td>
-          <td><%= turma.nome %></td>
-          <td>
-            <%= link_to 'Mostrar', turma, class: "btn btn-primary" %>
-            <%= link_to 'Editar', edit_turma_path(turma), class: "btn btn-warning" %>
-            <%= link_to 'Excluir', turma, method: :delete, data: { confirm: 'Tem certeza?' }, class: "btn btn-danger" %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+<% content_for :title, "Gerenciar Turmas" %>
+
+<div class="turmas-header">
+  <div class="container">
+    <div class="text-center">
+      <h1 class="turmas-title">GERENCIAR TURMAS</h1>
+      <h2 class="turmas-subtitle">Sistema de Eleições</h2>
+    </div>
+  </div>
+</div>
+
+<div class="container my-5">
+  <!-- Estatísticas -->
+  <div class="turmas-stats">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="bi bi-building"></i>
+      </div>
+      <div class="stat-content">
+        <span class="stat-number"><%= @turmas.count %></span>
+        <span class="stat-label">Total de Turmas</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon candidates-icon">
+        <i class="bi bi-people-fill"></i>
+      </div>
+      <div class="stat-content">
+        <span class="stat-number"><%= Candidatura.count %></span>
+        <span class="stat-label">Candidaturas</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon votes-icon">
+        <i class="bi bi-hand-thumbs-up-fill"></i>
+      </div>
+      <div class="stat-content">
+        <span class="stat-number"><%= Candidatura.sum(:votos) %></span>
+        <span class="stat-label">Total de Votos</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botão Nova Turma -->
+  <div class="text-center mb-4">
+    <%= link_to new_turma_path, class: "btn-new-turma" do %>
+      <i class="bi bi-plus-circle-fill"></i> Nova Turma
+    <% end %>
+  </div>
+
+  <!-- Lista de Turmas -->
+  <div class="turmas-list-container">
+    <div class="turmas-list-header">
+      <i class="bi bi-list-ul"></i>
+      <h3>Lista de Turmas Cadastradas</h3>
+    </div>
+
+    <% if @turmas.any? %>
+      <div class="turmas-grid">
+        <% @turmas.each do |turma| %>
+          <div class="turma-card">
+  <div class="turma-card-header">
+    <div class="turma-icon">
+      <i class="bi bi-mortarboard-fill"></i>
+    </div>
+    <div class="turma-info">
+      <h4 class="turma-name"><%= turma.nome %></h4>
+      <span class="turma-id">ID: <%= turma.id %></span>
+    </div>
+  </div>
+
+  <div class="turma-card-stats">
+    <div class="turma-stat">
+      <i class="bi bi-trophy"></i>
+      <span><%= turma.candidaturas.count %> Candidaturas</span>
+    </div>
+
+    <div class="turma-stat">
+      <i class="bi bi-graph-up-arrow"></i>
+      <span><%= turma.candidaturas.sum(:votos) %> Votos</span>
+    </div>
+
+    <div class="turma-stat">
+      <i class="bi bi-x-circle"></i>
+      <span><%= turma.votos_em_branco || 0 %> Votos em Branco</span>
+    </div>
+  </div>
+
+  <!-- Preview de Candidaturas -->
+  <% if turma.candidaturas.any? %>
+    <div class="turma-candidaturas-preview">
+      <div class="preview-header">
+        <i class="bi bi-people"></i>
+        <span>Candidaturas</span>
+      </div>
+      <div class="preview-list">
+        <% turma.candidaturas.limit(3).each do |candidatura| %>
+          <div class="preview-item">
+            <div class="preview-photos">
+              <% if candidatura.foto_lider.attached? %>
+                <%= image_tag candidatura.foto_lider, class: "preview-photo" %>
+              <% else %>
+                <div class="preview-photo-placeholder">
+                  <i class="bi bi-person"></i>
+                </div>
+              <% end %>
+
+              <% if candidatura.foto_vice.attached? %>
+                <%= image_tag candidatura.foto_vice, class: "preview-photo" %>
+              <% else %>
+                <div class="preview-photo-placeholder">
+                  <i class="bi bi-person"></i>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="preview-info">
+              <span class="preview-name"><%= candidatura.nome_urna %></span>
+              <span class="preview-votes">
+                <i class="bi bi-hand-thumbs-up"></i>
+                <%= candidatura.votos %>
+              </span>
+            </div>
+          </div>
+        <% end %>
+
+        <% if turma.candidaturas.count > 3 %>
+          <div class="preview-more">
+            <%= link_to turma, class: "preview-more-link" do %>
+              <i class="bi bi-plus-circle"></i>
+              Mais <%= turma.candidaturas.count - 3 %> candidatura<%= 's' if turma.candidaturas.count - 3 > 1 %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="turma-empty-preview">
+      <i class="bi bi-inbox"></i>
+      <span>Nenhuma candidatura ainda</span>
+    </div>
+  <% end %>
+
+  <div class="turma-card-actions">
+    <%= link_to turma, class: "btn-turma-show" do %>
+      <i class="bi bi-eye-fill"></i> Ver
+    <% end %>
+
+    <%= link_to edit_turma_path(turma), class: "btn-turma-edit" do %>
+      <i class="bi bi-pencil-square"></i> Editar
+    <% end %>
+
+    <%= link_to turma, method: :delete, 
+        data: { confirm: 'Tem certeza que deseja excluir esta turma? Todas as candidaturas associadas serão perdidas!' }, 
+        class: "btn-turma-delete" do %>
+      <i class="bi bi-trash3-fill"></i>
+    <% end %>
+  </div>
+</div>
+  
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <i class="bi bi-inbox"></i>
+        <h3>Nenhuma turma cadastrada</h3>
+        <p>Comece adicionando a primeira turma do sistema</p>
+        <%= link_to new_turma_path, class: "btn-empty-action" do %>
+          <i class="bi bi-plus-circle"></i> Cadastrar Primeira Turma
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>

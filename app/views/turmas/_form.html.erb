@@ -1,22 +1,48 @@
-<%= form_with(model: turma) do |form| %>
-  <% if turma.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(turma.errors.count, "error") %> prohibited this turma from being saved:</h2>
+<div class="turma-form-container">
+  <%= form_with(model: turma, class: "turma-form") do |form| %>
+    
+    <% if turma.errors.any? %>
+      <div class="turma-form-errors">
+        <div class="error-header">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+          <h3><%= pluralize(turma.errors.count, "erro") %> encontrado:</h3>
+        </div>
+        <ul class="error-list">
+          <% turma.errors.each do |error| %>
+            <li><i class="bi bi-x-circle"></i> <%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-      <ul>
-        <% turma.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+    <div class="turma-form-header">
+      <i class="bi bi-building"></i>
+      <h2>Informações da Turma</h2>
     </div>
+
+    <div class="turma-form-body">
+      <div class="turma-form-group">
+        <%= form.label :nome, "Nome da Turma", class: "turma-form-label" %>
+        <div class="turma-input-with-icon">
+          <i class="bi bi-pencil-fill"></i>
+          <%= form.text_field :nome, 
+              class: "turma-form-control", 
+              placeholder: "Ex: 3º Ano A, Turma 101, Informática 2024..." %>
+        </div>
+        <small class="turma-form-help">
+          <i class="bi bi-info-circle"></i>
+          Digite um nome claro e identificável para a turma
+        </small>
+      </div>
+    </div>
+
+    <div class="turma-form-actions">
+      <%= link_to turmas_path, class: "btn-turma-form-cancel" do %>
+        <i class="bi bi-x-circle"></i> Cancelar
+      <% end %>
+      
+      <%= form.submit "Salvar Turma", class: "btn-turma-form-submit" %>
+    </div>
+
   <% end %>
-
-  <div>
-    <%= form.label :nome, style: "display: block" %>
-    <%= form.text_field :nome %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>

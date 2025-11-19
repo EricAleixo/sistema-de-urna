@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  root to: "candidaturas#selecionar_turma"
+
   resources :candidaturas do
     collection do
       get 'selecionar_turma'
