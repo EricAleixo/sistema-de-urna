@@ -571,28 +571,29 @@
                 <p>Selecione a turma para a qual você deseja votar</p>
             </div>
 
-            <%= form_with url: urna_candidaturas_path, method: :get, id: "votingForm" do %>
-                <input type="hidden" name="turma_id" id="turmaInput">
-                
-                <div class="turmas-grid" id="turmasGrid">
-                    <% @turmas.each do |turma| %>
-                        <div class="turma-card" data-turma-id="<%= turma.id %>" onclick="selectTurma(this)">
-                            <div class="turma-check">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="turma-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <p class="turma-name"><%= turma.nome %></p>
-                        </div>
-                    <% end %>
-                </div>
+            <%= form_with url: open_voting_session_path, method: :post, id: "votingForm" do %>
+            <%= hidden_field_tag :turma_id, nil, id: "turmaInput" %>
 
-                <button type="submit" class="btn-continue" id="btnContinue" disabled>
-                    Criar sessão
-                    <i class="fas fa-arrow-right"></i>
-                </button>
+            <div class="turmas-grid" id="turmasGrid">
+                <% @turmas.each do |turma| %>
+                <div class="turma-card" data-turma-id="<%= turma.id %>" onclick="selectTurma(this)">
+                    <div class="turma-check">
+                    <i class="fas fa-check"></i>
+                    </div>
+                    <div class="turma-icon">
+                    <i class="fas fa-users"></i>
+                    </div>
+                    <p class="turma-name"><%= turma.nome %></p>
+                </div>
+                <% end %>
+            </div>
+
+            <button type="submit" class="btn-continue" id="btnContinue" disabled>
+                Criar sessão
+                <i class="fas fa-arrow-right"></i>
+            </button>
             <% end %>
+
         </div>
 
     </div>

@@ -1,0 +1,396 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "voting_sessions", media: "all" %>
+<% end %>
+
+<div class="voting-session-container">
+  <div class="session-wrapper">
+    <!-- Header -->
+    <div class="session-header">
+      <div class="header-left">
+        <div class="header-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <div class="header-content">
+          <h1 class="page-title">Painel de Controle</h1>
+          <p class="page-subtitle">Gerenciamento de Votação em Tempo Real</p>
+        </div>
+      </div>
+      <div class="status-badge <%= @session.status %>">
+        <span class="status-dot"></span>
+        <span class="status-label"><%= @session.status.upcase %></span>
+      </div>
+    </div>
+
+    <!-- Session Info Grid -->
+    <div class="info-section">
+      <div class="info-card primary">
+        <div class="info-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <line x1="9" y1="3" x2="9" y2="21"/>
+          </svg>
+        </div>
+        <div class="info-data">
+          <span class="info-value">#<%= @session.id %></span>
+          <span class="info-label">ID da Sessão</span>
+        </div>
+      </div>
+
+      <div class="info-card secondary">
+        <div class="info-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div class="info-data">
+          <span class="info-value"><%= @turma.nome %></span>
+          <span class="info-label">Turma</span>
+        </div>
+      </div>
+
+      <div class="info-card accent">
+        <div class="info-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <div class="info-data">
+          <span class="info-value" id="total-votos"><%= @total_votos %></span>
+          <span class="info-label">Total de Votos</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Control Buttons -->
+    <div class="controls-section">
+  <% if @session.status != 'closed' %>
+    <button type="button"
+            id="toggle-status-btn"
+            class="control-btn <%= @session.status == 'open' ? 'btn-pause' : 'btn-resume' %>"
+            data-url="<%= toggle_status_voting_session_path(@session) %>"
+            data-status="<%= @session.status %>">
+      <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <% if @session.status == 'open' %>
+          <rect x="6" y="4" width="4" height="16"/>
+          <rect x="14" y="4" width="4" height="16"/>
+        <% else %>
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        <% end %>
+      </svg>
+      <span class="btn-text"><%= @session.status == 'open' ? 'Pausar Votação' : 'Retomar Votação' %></span>
+    </button>
+
+    <%= button_to close_voting_session_path(@session), 
+        method: :patch, 
+        class: "control-btn btn-close",
+        data: { confirm: "Atenção!\n\nDeseja realmente encerrar esta sessão?\nEsta ação é irreversível." } do %>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      <span>Encerrar Sessão</span>
+    <% end %>
+  <% else %>
+    <div class="session-finished">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+      <span>Sessão encerrada com Sucesso</span>
+    </div>
+  <% end %>
+</div>
+
+
+    <!-- Results -->
+    <div class="results-wrapper">
+      <div class="results-header">
+        <div class="results-title-area">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          <h2 class="results-title">Apuração de Votos</h2>
+        </div>
+        <div class="results-badge">
+          <%= @candidaturas.count %> Candidatura<%= @candidaturas.count != 1 ? 's' : '' %>
+        </div>
+      </div>
+
+      <% if @candidaturas.any? %>
+        <div class="candidates-grid">
+          <% @candidaturas.each_with_index do |candidatura, index| %>
+            <div class="candidate-card <%= 'winner-card' if index == 0 && @session.status == 'closed' %>">
+              <!-- Position Badge -->
+              <div class="position-badge <%= 'position-first' if index == 0 %>">
+                <% if index == 0 && @session.status == 'closed' %>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                <% else %>
+                  <%= index + 1 %>º
+                <% end %>
+              </div>
+
+              <div class="candidate-content">
+                <!-- Photo -->
+                <div class="candidate-photo-wrapper">
+                  <% if candidatura.foto_lider.present? %>
+                    <%= image_tag candidatura.foto_lider, class: "candidate-photo", alt: candidatura.nome_candidato %>
+                  <% else %>
+                    <div class="candidate-photo-placeholder">
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                      </svg>
+                    </div>
+                  <% end %>
+                </div>
+
+                <!-- Info -->
+                <div class="candidate-info">
+                  <div class="candidate-header">
+                    <h3 class="candidate-name"><%= candidatura.nome_candidato %></h3>
+                    <div class="ballot-name-wrapper">
+                      <span class="ballot-label">Nome de urna:</span>
+                      <span class="ballot-name"><%= candidatura.nome_urna %></span>
+                    </div>
+                  </div>
+
+                  <div class="vice-section">
+                    <div class="vice-photo-mini">
+                      <% if candidatura.foto_vice.present? %>
+                        <%= image_tag candidatura.foto_vice, class: "vice-photo", alt: candidatura.vice_lider %>
+                      <% else %>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                          <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                      <% end %>
+                    </div>
+                    <div class="vice-info">
+                      <span class="vice-label">Vice-líder:</span>
+                      <span class="vice-name"><%= candidatura.vice_lider %></span>
+                      <span class="vice-ballot">(<%= candidatura.nome_urna_vice %>)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="candidate-stats-section">
+                  <div class="stats-main">
+                    <span class="stats-number" id="votos-<%= candidatura.id %>"><%= candidatura.votos %></span>
+                    <span class="stats-label">votos</span>
+                  </div>
+                  <% if @total_votos > 0 %>
+                    <div class="stats-percentage" id="percent-<%= candidatura.id %>">
+                      <%= number_to_percentage((candidatura.votos.to_f / @total_votos * 100), precision: 1) %>
+                    </div>
+                    <div class="progress-bar-container">
+                      <div class="progress-bar-fill" id="progress-<%= candidatura.id %>" 
+                        style="width: <%= (candidatura.votos.to_f / @total_votos * 100).round(2) %>%"></div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- Blank Votes -->
+        <% if @turma.votos_em_branco && @turma.votos_em_branco > 0 %>
+          <div class="blank-votes-card">
+            <div class="blank-icon-wrapper">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+              </svg>
+            </div>
+            <div class="blank-info">
+              <span class="blank-title">Votos em Branco</span>
+              <span class="blank-description">Eleitores que optaram por não escolher nenhum candidato</span>
+            </div>
+            <div class="blank-stats">
+              <span class="blank-number"><%= @turma.votos_em_branco %></span>
+              <% if @total_votos > 0 %>
+                <span class="blank-percent">
+                  <%= number_to_percentage((@turma.votos_em_branco.to_f / @total_votos * 100), precision: 1) %>
+                </span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M9 11H3v2h6m-6 8h18v-2H3m3-6h3v2H6m5-2h9v2h-9m-3-6h18v2H3z"/>
+            </svg>
+          </div>
+          <h3 class="empty-title">Nenhuma Candidatura Cadastrada</h3>
+          <p class="empty-description">Esta turma ainda não possui candidatos registrados para a eleição.</p>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-section">
+      <%= link_to root_path, class: "back-link" do %>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        <span>Voltar ao Início</span>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import "channels/voting_session_channel"
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const toggleButton = document.getElementById('toggle-status-btn');
+  const statusBadge = document.querySelector('.status-badge');
+  const statusLabel = statusBadge?.querySelector('.status-label');
+  
+
+  if (toggleButton) {
+    toggleButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const url = this.dataset.url;
+      const currentStatus = this.dataset.status;
+      
+      // Desabilita o botão temporariamente
+      toggleButton.disabled = true;
+      toggleButton.style.opacity = '0.6';
+      
+      // Faz a requisição AJAX
+      fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content,
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          const newStatus = data.status;
+          
+          // Atualiza o badge de status
+          if (statusBadge && statusLabel) {
+            statusBadge.className = 'status-badge ' + newStatus;
+            statusLabel.textContent = newStatus.toUpperCase();
+          }
+          
+          // Atualiza o botão
+          updateToggleButton(newStatus);
+          
+          // Mostra notificação de sucesso
+          showNotification(data.message, 'success');
+        } else {
+          showNotification(data.message || 'Erro ao atualizar sessão', 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Erro:', error);
+        showNotification('Erro ao comunicar com o servidor', 'error');
+      })
+      .finally(() => {
+        // Reabilita o botão
+        toggleButton.disabled = false;
+        toggleButton.style.opacity = '1';
+      });
+    });
+  }
+  
+  function updateToggleButton(status) {
+    const button = document.getElementById('toggle-status-btn');
+    const icon = button.querySelector('.btn-icon');
+    const text = button.querySelector('.btn-text');
+    
+    if (status === 'open') {
+      // Mudar para botão de PAUSAR
+      button.className = 'control-btn btn-pause';
+      button.dataset.status = 'open';
+      icon.innerHTML = `
+        <rect x="6" y="4" width="4" height="16"/>
+        <rect x="14" y="4" width="4" height="16"/>
+      `;
+      text.textContent = 'Pausar Votação';
+    } else if (status === 'paused') {
+      // Mudar para botão de RETOMAR
+      button.className = 'control-btn btn-resume';
+      button.dataset.status = 'paused';
+      icon.innerHTML = `<polygon points="5 3 19 12 5 21 5 3"/>`;
+      text.textContent = 'Retomar Votação';
+    }
+  }
+  
+  function showNotification(message, type) {
+    // Criar elemento de notificação
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 16px 24px;
+      background: ${type === 'success' ? '#10b981' : '#ef4444'};
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 10000;
+      font-weight: 500;
+      animation: slideIn 0.3s ease-out;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Remove após 3 segundos
+    setTimeout(() => {
+      notification.style.animation = 'slideOut 0.3s ease-out';
+      setTimeout(() => notification.remove(), 300);
+    }, 3000);
+  }
+});
+
+// Animações para notificação
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideIn {
+    from {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideOut {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(style);
+</script>

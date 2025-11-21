@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
+  devise_for :users
 
-  root to: "candidaturas#selecionar_turma"
+  root to: "home#index"
 
   resources :candidaturas do
     collection do
@@ -9,6 +10,18 @@ Rails.application.routes.draw do
       post 'registrar_voto'
     end
   end
+
+  resources :voting_sessions do
+    member do
+      patch :toggle_status
+      patch :close
+    end
+  end
+
+  get "/mesario/selecionar_turma", to: "mesarios#selecionar_turma", as: :mesario_selecionar_turma
+  post "voting_session/open", to: "voting_sessions#open", as: :open_voting_session
+
+
 
   resources :turmas
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
