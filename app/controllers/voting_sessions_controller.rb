@@ -62,9 +62,10 @@ class VotingSessionsController < ApplicationController
     if @session.update(status: 'closed')
       # Broadcast definitivo de encerramento
       ActionCable.server.broadcast(
-        "voting_session_channel",
+        "VotingSessionChannel",
         {
-          action: "session_closed",
+          action: "status_changed",
+          status: "closed",
           session_id: @session.id,
           turma_id: @session.turma_id
         }
