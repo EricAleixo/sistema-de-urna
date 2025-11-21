@@ -1,4 +1,8 @@
 class VotingSessionsController < ApplicationController
+
+  def index
+    @voting_session = VotingSession.all
+  end
   
   def show
     @session = VotingSession.find(params[:id])
