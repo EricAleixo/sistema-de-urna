@@ -1,9 +1,11 @@
+# app/channels/urna_channel.rb
 class UrnaChannel < ApplicationCable::Channel
   def subscribed
-    # stream_from "some_channel"
+    stream_from "UrnaChannel"
+    Rails.logger.info "Urna conectada ao canal"
   end
 
   def unsubscribed
-    # Any cleanup needed when channel is unsubscribed
+    stop_all_streams
   end
 end

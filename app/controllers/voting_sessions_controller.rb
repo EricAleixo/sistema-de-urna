@@ -11,20 +11,19 @@ class VotingSessionsController < ApplicationController
     @total_votos = @candidaturas.sum(:votos) + (@turma.votos_em_branco || 0)
   end
 
-  # Alterna entre open/paused (NÃO fecha definitivamente)
   def toggle_status
     @session = VotingSession.find(params[:id])
     
     new_status = @session.open? ? 'paused' : 'open'
     
     if @session.update(status: new_status)
-      # Broadcast para todos os clientes conectados
-      puts "Aberto agora!!!!"
+      # Broadcast para as urnas
       ActionCable.server.broadcast(
-        "VotingSessionChannel",
+        "UrnaChannel",
         {
           action: 'status_changed',
           status: new_status,
+          turma_id: @session.turma_id,
           message: new_status == 'paused' ? 'Votação pausada' : 'Votação retomada'
         }
       )
@@ -53,20 +52,30 @@ class VotingSessionsController < ApplicationController
     )
 
     if session.save
+      # Broadcast para as URNAS saírem da tela de espera
+      ActionCable.server.broadcast(
+        "UrnaChannel",
+        {
+          action: "session_opened",
+          status: "open",
+          turma_id: turma_id,
+          session_id: session.id
+        }
+      )
+      
       redirect_to voting_session_path(session), notice: "Sessão de voto criada com sucesso!"
     else
       redirect_to selecionar_turma_path, alert: "Erro ao criar sessão."
     end
   end
 
-  # Fecha sessão DEFINITIVAMENTE
   def close
     @session = VotingSession.find(params[:id])
     
     if @session.update(status: 'closed')
-      # Broadcast definitivo de encerramento
+      # Broadcast para as urnas
       ActionCable.server.broadcast(
-        "VotingSessionChannel",
+        "UrnaChannel",
         {
           action: "status_changed",
           status: "closed",

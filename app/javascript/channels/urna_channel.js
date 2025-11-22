@@ -2,7 +2,6 @@ import consumer from "channels/consumer"
 
 // ===== FUNÇÕES PARA TELA DE PAUSA =====
 function mostrarTelaPausa() {
-  // Remove tela de pausa existente se houver
   const pausaExistente = document.getElementById('tela-pausa-overlay');
   if (pausaExistente) {
     pausaExistente.remove();
@@ -38,7 +37,6 @@ function mostrarTelaPausa() {
   
   document.body.appendChild(overlay);
   
-  // Anima a entrada
   requestAnimationFrame(() => {
     overlay.classList.add('show');
   });
@@ -54,7 +52,6 @@ function esconderTelaPausa() {
   }
 }
 
-// Função para mostrar notificação visual
 function mostrarNotificacao(mensagem, tipo = 'info') {
   const notifExistente = document.querySelector('.notificacao-urna');
   if (notifExistente) {
@@ -87,20 +84,33 @@ function mostrarNotificacao(mensagem, tipo = 'info') {
   }, 4000);
 }
 
-// Conecta ao canal WebSocket
-consumer.subscriptions.create("VotingSessionChannel", {
+// Conecta ao canal WebSocket da URNA
+consumer.subscriptions.create("UrnaChannel", {
   connected() {
-    console.log("✅ [URNA] Conectado ao canal de votação em tempo real");
+    console.log("✅ [URNA] Conectado ao canal de urna em tempo real");
   },
 
   disconnected() {
-    console.log("❌ [URNA] Desconectado do canal de votação");
+    console.log("❌ [URNA] Desconectado do canal de urna");
   },
 
   received(data) {
     console.log("📊 [URNA] Dados recebidos:", data);
     
-    if (data.action === "status_changed") {
+    // Quando uma sessão é aberta
+    if (data.action === "session_opened") {
+      console.log("🚀 [URNA] Sessão aberta para turma:", data.turma_id);
+      
+      // Recarrega a página para sair da tela de aguardo
+      mostrarNotificacao("Sessão iniciada! Carregando urna...", "resume");
+      
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+    
+    // Quando o status da sessão muda
+    else if (data.action === "status_changed") {
       console.log("🔄 [URNA] Status da votação mudou:", data.status);
       
       if (data.status === "paused") {
@@ -112,9 +122,9 @@ consumer.subscriptions.create("VotingSessionChannel", {
         mostrarNotificacao("Votação retomada! Você já pode votar.", "resume");
       }
       else if (data.status === "closed") {
-        console.log("cheou aqui")
-        // Opcionalmente redirecionar ou mostrar mensagem de encerramento
+        console.log("🔒 [URNA] Sessão encerrada");
         mostrarNotificacao("Sessão encerrada!", "info");
+        
         setTimeout(() => {
           window.location.reload();
         }, 2000);
