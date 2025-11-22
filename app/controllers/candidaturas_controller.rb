@@ -39,7 +39,7 @@ class CandidaturasController < ApplicationController
   end
 
   def urna
-    @session = VotingSession.find_by(status: :open)
+    @session = VotingSession.find_by(status: "open")
     @turmas = Turma.all
     if(@session == nil)
       return

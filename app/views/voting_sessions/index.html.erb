@@ -136,7 +136,7 @@
             </div>
           </div>
 
-          <% if session.turma.candidaturas.any? %>
+          <% if session.turma.candidaturas.any? && session.status == "closed" %>
             <div class="candidates-preview">
               <div class="preview-header">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

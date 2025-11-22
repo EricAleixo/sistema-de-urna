@@ -42,6 +42,7 @@ class VotingSessionsController < ApplicationController
   end
 
   def open
+    VotingSession.update(status: "closed")
     turma_id = params[:turma_id]
     mesario_id = current_user.id
 
