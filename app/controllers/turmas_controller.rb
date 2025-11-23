@@ -57,6 +57,19 @@ class TurmasController < ApplicationController
     end
   end
 
+  def destroy_all_votes
+    @turma = Turma.find(params[:id])
+    @candidaturas = @turma.candidaturas
+
+    @turma.update(votos_em_branco: 0)
+    @candidaturas.update_all(votos: 0)
+
+    respond_to do |format|
+      format.html { redirect_to @turma, notice: "Votos deletados com sucesso" }
+      format.json { render :show, status: :created, location: @turma }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_turma

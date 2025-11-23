@@ -59,11 +59,27 @@
             <span class="turma-stat-label">Total de Votos</span>
           </div>
         </div>
+        <div class="turma-show-stat-card">
+          <div class="turma-stat-icon branco-icon">
+            <i class="bi bi-flag-fill"></i>
+          </div>
+          <div class="turma-stat-content">
+            <span class="turma-stat-number"><%= @turma.candidaturas.sum(:votos) %></span>
+            <span class="turma-stat-label">Votos em brancos</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Candidaturas da Turma -->
     <div class="turma-candidaturas-section">
+
+      <%= button_to destroy_all_votes_turma_path(@turma), method: :delete, class: "btn-clear mb-3" do%>
+        <span class="icon-trash"></span>
+          Apagar todos os votos
+        <span class="sparks"></span>
+      <% end %>
+
+
       <h2 class="turma-section-title">
         <i class="bi bi-people-fill"></i>
         Candidaturas desta Turma

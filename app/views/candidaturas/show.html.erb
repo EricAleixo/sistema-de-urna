@@ -168,7 +168,7 @@
       <%= link_to edit_candidatura_path(@candidatura), class: "btn-show-edit" do %>
         <i class="bi bi-pencil-square"></i> Editar Candidatura
       <% end %>
-      <%= link_to candidatura_path(@candidatura), method: :delete, 
+      <%= button_to @candidatura, method: :delete, 
           data: { confirm: 'Tem certeza que deseja excluir esta candidatura?' }, 
           class: "btn-show-delete" do %>
         <i class="bi bi-trash3-fill"></i> Excluir

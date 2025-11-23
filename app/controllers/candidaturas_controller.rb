@@ -88,7 +88,15 @@ class CandidaturasController < ApplicationController
     redirect_to urna_candidaturas_path, notice: notice
   end
 
+  def destroy
+    @candidatura = Candidatura.find(params[:id])
+    @candidatura.destroy!
 
+    respond_to do |format|
+      format.html { redirect_to candidaturas_path, status: :see_other, notice: "Candidatura was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
 
   private
 

@@ -19,7 +19,7 @@ $light-gray: #f8f9fa;
   overflow: hidden;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -159,6 +159,90 @@ $light-gray: #f8f9fa;
     font-size: 1.5rem;
   }
 }
+.btn-clear {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffcc00; // amarelo sólido
+  color: #0a2342; // azul escuro
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    box-shadow:
+      0 0 12px #ffd84d,
+      0 0 20px #ffeb8a;
+    transform: translateY(-2px);
+
+    .icon-trash {
+      transform: translateY(-2px) rotate(-10deg);
+    }
+  }
+
+  .icon-trash {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-size: cover;
+    background-color: #0a2342;
+    mask: url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/trash.svg")
+      center / contain no-repeat;
+    -webkit-mask: url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/trash.svg")
+      center / contain no-repeat;
+    transition: transform 0.3s ease;
+  }
+
+  .sparks {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: #fff8c6;
+      border-radius: 50%;
+      opacity: 0;
+      animation: spark 0.8s infinite ease-out;
+    }
+
+    &::before {
+      left: 20%;
+      top: 50%;
+    }
+
+    &::after {
+      right: 25%;
+      top: 55%;
+      animation-delay: 0.3s;
+    }
+  }
+}
+
+@keyframes spark {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-18px) scale(0.5);
+    opacity: 0;
+  }
+}
 
 // ========================================
 // CONTAINER DA LISTA
@@ -278,7 +362,6 @@ $light-gray: #f8f9fa;
     }
   }
 }
-
 
 .turma-stat {
   display: flex;
@@ -656,7 +739,7 @@ $light-gray: #f8f9fa;
   position: relative;
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
@@ -778,6 +861,10 @@ $light-gray: #f8f9fa;
 
   &.votos-icon {
     background: linear-gradient(135deg, #4caf50, #388e3c);
+  }
+
+  &.branco-icon {
+    background: linear-gradient(135deg, #d0d0d0, #b5b5b5);
   }
 }
 
@@ -1774,4 +1861,3 @@ $light-gray: #f8f9fa;
     flex-wrap: wrap;
   }
 }
-

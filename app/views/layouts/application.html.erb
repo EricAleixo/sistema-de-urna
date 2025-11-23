@@ -39,7 +39,6 @@
         transform: translateY(0);
       }
       
-      /* Espaçamento para compensar a navbar fixa */
       body {
         transition: padding-top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
@@ -355,18 +354,17 @@
           const navbar = document.querySelector('.navbar-eleitoral');
           const body = document.body;
           let hideTimer;
+          const timeToLeft = 1800
           
-          // Esconde a navbar após 4 segundos
           function scheduleHide() {
             clearTimeout(hideTimer);
             hideTimer = setTimeout(() => {
               navbar.classList.add('navbar-hidden');
               navbar.classList.remove('navbar-visible');
               body.classList.add('navbar-is-hidden');
-            }, 4000);
+            }, timeToLeft);
           }
           
-          // Mostra a navbar
           function showNavbar() {
             navbar.classList.remove('navbar-hidden');
             navbar.classList.add('navbar-visible');
@@ -374,22 +372,18 @@
             scheduleHide();
           }
           
-          // Inicia o timer ao carregar a página
           scheduleHide();
           
-          // Detecta quando o mouse está perto do topo da página
           document.addEventListener('mousemove', function(e) {
-            if (e.clientY < 100) { // Mouse nos primeiros 100px do topo
+            if (e.clientY < 100) {
               showNavbar();
             }
           });
           
-          // Mostra navbar quando passa o mouse sobre ela
           navbar.addEventListener('mouseenter', function() {
             showNavbar();
           });
           
-          // Reinicia o timer quando o mouse sai da navbar
           navbar.addEventListener('mouseleave', function() {
             scheduleHide();
           });

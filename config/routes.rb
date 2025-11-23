@@ -22,8 +22,9 @@ Rails.application.routes.draw do
   post "voting_session/open", to: "voting_sessions#open", as: :open_voting_session
 
 
-
-  resources :turmas
+  resources :turmas do
+    delete "votos/delete_all", to: "turmas#destroy_all_votes", as: :destroy_all_votes, on: :member
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
