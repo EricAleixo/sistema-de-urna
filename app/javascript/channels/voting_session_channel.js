@@ -80,13 +80,10 @@ function adicionarPulso(elemento) {
 function atualizarVotos(data) {
   const { candidatura_id, votos, votos_em_branco } = data;
 
-  console.log('🔄 Atualizando votos:', { candidatura_id, votos, votos_em_branco });
-
   const totalEl = document.getElementById("total-votos");
   if (totalEl) {
     const totalAtual = parseInt(totalEl.textContent) || 0;
     const novoTotal = totalAtual + 1;
-    console.log('✅ Incrementando total de votos:', totalAtual, '→', novoTotal);
     animarNumero(totalEl, novoTotal);
     adicionarPulso(totalEl.closest('.info-card'));
   } else {
@@ -270,15 +267,14 @@ function mostrarNotificacao(mensagem, tipo = 'success') {
 // Conecta ao canal WebSocket
 consumer.subscriptions.create("VotingSessionChannel", {
   connected() {
-    console.log("✅ Conectado ao canal de votação em tempo real");
+    console.log("Conectado ao canal de votação em tempo real");
   },
 
   disconnected() {
-    console.log("❌ Desconectado do canal de votação");
+    console.log("Desconectado do canal de votação");
   },
 
   received(data) {
-    console.log("📊 Dados recebidos:", data);
     
     if (data.action === "vote") {
       atualizarVotos(data);

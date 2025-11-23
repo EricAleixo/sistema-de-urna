@@ -42,7 +42,7 @@ class VotingSessionsController < ApplicationController
   end
 
   def open
-    VotingSession.update(status: "closed")
+    VotingSession.update_all(status: "closed")
     turma_id = params[:turma_id]
     mesario_id = current_user.id
 
@@ -66,7 +66,7 @@ class VotingSessionsController < ApplicationController
       
       redirect_to voting_session_path(session), notice: "Sessão de voto criada com sucesso!"
     else
-      redirect_to selecionar_turma_path, alert: "Erro ao criar sessão."
+      redirect_to mesario_selecionar_turma_path, alert: "Erro ao criar sessão."
     end
   end
 
@@ -88,6 +88,47 @@ class VotingSessionsController < ApplicationController
       redirect_to @session, notice: "Sessão encerrada com sucesso!"
     else
       redirect_to @session, alert: "Erro ao encerrar sessão"
+    end
+  end
+
+  def destroy
+    @session = VotingSession.find(params[:id])
+    turma_nome = @session.turma.nome
+    
+    # Fecha a sessão antes de excluir (se não estiver fechada)
+    if @session.status != 'closed'
+      @session.update(status: 'closed')
+      
+      # Broadcast para as urnas informando o fechamento
+      ActionCable.server.broadcast(
+        "UrnaChannel",
+        {
+          action: "status_changed",
+          status: "closed",
+          session_id: @session.id,
+          turma_id: @session.turma_id
+        }
+      )
+    end
+    
+    # Aguarda um momento para garantir que o broadcast foi processado
+    sleep(0.5)
+    
+    # Broadcast informando que a sessão será excluída
+    ActionCable.server.broadcast(
+      "UrnaChannel",
+      {
+        action: "session_deleted",
+        session_id: @session.id,
+        turma_id: @session.turma_id,
+        message: "Sessão excluída pelo mesário"
+      }
+    )
+    
+    if @session.destroy
+      redirect_to voting_sessions_path, notice: "Sessão da turma #{turma_nome} excluída com sucesso!"
+    else
+      redirect_to voting_sessions_path, alert: "Erro ao excluir sessão"
     end
   end
 end

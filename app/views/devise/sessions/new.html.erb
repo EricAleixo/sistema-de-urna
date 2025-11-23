@@ -1,26 +1,534 @@
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<div class="login-container">
+  <!-- Logo da Escola -->
+  <div class="school-logo-container">
+    <%= image_tag "logo.png", alt: "Logo da Escola", class: "school-logo" %>
   </div>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+  <div class="login-card">
+    <!-- Header -->
+    <div class="login-header">
+      <div class="login-icon">
+        <i class="bi bi-box-arrow-in-right"></i>
+      </div>
+      <h1 class="login-title">Sistema Eleitoral</h1>
+      <p class="login-subtitle">Faça login para acessar o sistema</p>
     </div>
-  <% end %>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
+    <!-- Formulário -->
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'login-form' }) do |f| %>
+      
+      <!-- Email -->
+      <div class="login-form-group">
+        <%= f.label :email, class: 'login-label' do %>
+          <i class="bi bi-envelope"></i>
+          E-mail
+        <% end %>
+        <div class="login-input-wrapper">
+          <i class="bi bi-envelope-fill input-icon"></i>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", 
+              class: 'login-input', placeholder: 'seu@email.com' %>
+        </div>
+      </div>
+
+      <!-- Senha -->
+      <div class="login-form-group">
+        <%= f.label :password, class: 'login-label' do %>
+          <i class="bi bi-lock"></i>
+          Senha
+        <% end %>
+        <div class="login-input-wrapper">
+          <i class="bi bi-lock-fill input-icon"></i>
+          <%= f.password_field :password, autocomplete: "current-password", 
+              class: 'login-input', placeholder: '••••••••' %>
+        </div>
+      </div>
+
+      <!-- Lembrar-me -->
+      <% if devise_mapping.rememberable? %>
+        <div class="login-remember">
+          <label class="remember-checkbox">
+            <%= f.check_box :remember_me %>
+            <span class="checkmark"></span>
+            <span class="remember-text">Lembrar-me neste dispositivo</span>
+          </label>
+        </div>
+      <% end %>
+
+      <!-- Botão Submit -->
+      <div class="login-actions">
+        <%= f.submit "Entrar no Sistema", class: 'btn-login' %>
+      </div>
+    <% end %>
+
+    <!-- Links -->
+    <div class="login-links">
+      <%= render "devise/shared/links" %>
+    </div>
   </div>
-<% end %>
+</div>
 
-<%= render "devise/shared/links" %>
+<style>
+  /* Container Principal */
+  .login-container {
+    min-height: 100vh;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0a1e4a 0%, #162d5c 50%, #1a3a6e 100%);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .login-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.5;
+  }
+
+  /* Logo da Escola */
+  .school-logo-container {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.8s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .school-logo {
+    max-width: 180px;
+    max-height: 100px;
+    width: auto;
+    height: auto;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+    transition: transform 0.3s ease;
+  }
+
+  .school-logo:hover {
+    transform: scale(1.05);
+  }
+
+  /* Card de Login */
+  .login-card {
+    background: #ffffff;
+    border-radius: 25px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 450px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    animation: slideUp 0.6s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Header */
+  .login-header {
+    background: linear-gradient(135deg, #0a1e4a 0%, #162d5c 100%);
+    padding: 1.75rem 1.5rem;
+    text-align: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .login-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, transparent, #f5b942, transparent);
+  }
+
+  .login-icon {
+    width: 65px;
+    height: 65px;
+    background: linear-gradient(135deg, #f5b942, #e5a932);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.85rem;
+    box-shadow: 0 10px 30px rgba(245, 185, 66, 0.4);
+  }
+
+  .login-icon i {
+    font-size: 2rem;
+    color: #0a1e4a;
+  }
+
+  .login-title {
+    color: #ffffff;
+    font-size: 1.7rem;
+    font-weight: 800;
+    margin: 0 0 0.35rem 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .login-subtitle {
+    color: #f5b942;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.5px;
+  }
+
+  /* Formulário */
+  .login-form {
+    padding: 0.75rem 2rem;
+    flex-shrink: 0;
+  }
+
+  .login-form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .login-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #0a1e4a;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .login-label i {
+    color: #f5b942;
+    font-size: 1.1rem;
+  }
+
+  .login-input-wrapper {
+    position: relative;
+  }
+
+  .input-icon {
+    position: absolute;
+    left: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #a0a0a0;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+    pointer-events: none;
+  }
+
+  .login-input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3.5rem;
+    border: 3px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0a1e4a;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+  }
+
+  .login-input:focus {
+    outline: none;
+    border-color: #f5b942;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(245, 185, 66, 0.1);
+  }
+
+  .login-input:focus + .input-icon,
+  .login-input-wrapper:focus-within .input-icon {
+    color: #f5b942;
+  }
+
+  .login-input::placeholder {
+    color: #b0b0b0;
+    font-weight: 400;
+  }
+
+  /* Remember Me */
+  .login-remember {
+    margin-bottom: 1.25rem;
+  }
+
+  .remember-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .remember-checkbox input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .checkmark {
+    position: absolute;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    background: #f8f9fa;
+    border: 3px solid #e0e0e0;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  }
+
+  .remember-checkbox:hover .checkmark {
+    border-color: #f5b942;
+    background: rgba(245, 185, 66, 0.1);
+  }
+
+  .remember-checkbox input:checked ~ .checkmark {
+    background: linear-gradient(135deg, #f5b942, #e5a932);
+    border-color: #f5b942;
+  }
+
+  .remember-checkbox input:checked ~ .checkmark::after {
+    content: '\F26B';
+    font-family: 'bootstrap-icons';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #0a1e4a;
+    font-size: 0.9rem;
+    font-weight: 900;
+  }
+
+  .remember-text {
+    color: #0a1e4a;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  /* Botão */
+  .login-actions {
+    margin-bottom: 0;
+  }
+
+  .btn-login {
+    width: 100%;
+    background: linear-gradient(135deg, #f5b942 0%, #e5a932 100%);
+    color: #0a1e4a;
+    border: none;
+    padding: 1.15rem;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(245, 185, 66, 0.3);
+  }
+
+  .btn-login:hover {
+    background: linear-gradient(135deg, #e5a932 0%, #d59922 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(245, 185, 66, 0.5);
+  }
+
+  .btn-login:active {
+    transform: translateY(-1px);
+  }
+
+  /* Links */
+  .login-links {
+    padding: 0 2.5rem 2.5rem;
+    text-align: center;
+    border-top: 2px solid #f0f0f0;
+    padding-top: 2rem;
+  }
+
+  .login-links a {
+    color: #0a1e4a;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin: 0.25rem;
+  }
+
+  .login-links a:hover {
+    background: rgba(245, 185, 66, 0.1);
+    color: #f5b942;
+    transform: translateX(3px);
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px) and (min-width: 577px) {
+    /* Tablet */
+    .school-logo {
+      max-width: 160px;
+      max-height: 90px;
+    }
+
+    .login-card {
+      max-width: 500px;
+    }
+
+    .login-header {
+      padding: 2.25rem 2rem;
+    }
+
+    .login-icon {
+      width: 75px;
+      height: 75px;
+    }
+
+    .login-icon i {
+      font-size: 2.3rem;
+    }
+
+    .login-title {
+      font-size: 1.9rem;
+    }
+
+    .login-subtitle {
+      font-size: 1rem;
+    }
+
+    .login-form {
+      padding: 2.25rem 2.5rem;
+    }
+
+    .login-input {
+      padding: 1.1rem 1.1rem 1.1rem 3.6rem;
+      font-size: 1.05rem;
+    }
+
+    .btn-login {
+      padding: 1.3rem;
+      font-size: 1.25rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .login-container {
+      padding: 1rem;
+    }
+
+    .school-logo {
+      max-width: 140px;
+      max-height: 80px;
+    }
+
+    .school-logo-container {
+      margin-bottom: 1rem;
+    }
+
+    .login-card {
+      border-radius: 20px;
+    }
+
+    .login-header {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .login-icon {
+      width: 60px;
+      height: 60px;
+    }
+
+    .login-icon i {
+      font-size: 1.8rem;
+    }
+
+    .login-title {
+      font-size: 1.4rem;
+    }
+
+    .login-subtitle {
+      font-size: 0.85rem;
+    }
+
+    .login-form {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .login-form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .login-input {
+      padding: 0.9rem 0.9rem 0.9rem 3.2rem;
+      font-size: 0.95rem;
+    }
+
+    .btn-login {
+      padding: 1rem;
+      font-size: 1.1rem;
+    }
+  }
+
+  @media (max-height: 700px) {
+    .school-logo {
+      max-height: 70px;
+    }
+
+    .login-header {
+      padding: 1.5rem 1.5rem;
+    }
+
+    .login-icon {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 0.75rem;
+    }
+
+    .login-icon i {
+      font-size: 2rem;
+    }
+
+    .login-title {
+      font-size: 1.5rem;
+    }
+
+    .login-form {
+      padding: 0.75rem 2rem;
+    }
+
+    .login-form-group {
+      margin-bottom: 1.25rem;
+    }
+  }
+</style>

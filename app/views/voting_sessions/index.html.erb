@@ -38,7 +38,7 @@
       </div>
       <h3 class="empty-title">Nenhuma sessão criada ainda</h3>
       <p class="empty-description">Comece criando sua primeira sessão de votação para gerenciar eleições de líderes e vice-líderes</p>
-      <%= link_to new_voting_session_path, class: "btn-empty-action" do %>
+      <%= link_to "mesario/selecionar_turma", class: "btn-empty-action" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"/>
           <line x1="12" y1="8" x2="12" y2="16"/>
@@ -75,13 +75,14 @@
                   <circle cx="12" cy="12" r="3"/>
                 </svg>
               <% end %>
-              <%= link_to edit_voting_session_path(session), class: "btn-action btn-edit", title: "Editar" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                </svg>
-              <% end %>
-              <%= link_to voting_session_path(session), method: :delete, data: { confirm: "Tem certeza que deseja excluir esta sessão?" }, class: "btn-action btn-delete", title: "Excluir" do %>
+              <%= button_to voting_session_path(session), 
+                  method: :delete, 
+                  data: { 
+                    turbo_confirm: "Tem certeza que deseja excluir esta sessão?" 
+                  }, 
+                  class: "btn-action btn-delete", 
+                  title: "Excluir",
+                  form: { style: "display: inline;" } do %>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="3 6 5 6 21 6"/>
                   <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>

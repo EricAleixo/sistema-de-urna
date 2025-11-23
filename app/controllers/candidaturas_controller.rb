@@ -33,11 +33,6 @@ class CandidaturasController < ApplicationController
     end
   end
 
-  def selecionar_turma
-    require_mesario
-    @turmas = Turma.all
-  end
-
   def urna
     @session = VotingSession.find_by(status: "open")
     @turmas = Turma.all
@@ -61,7 +56,7 @@ class CandidaturasController < ApplicationController
       turma.increment!(:votos_em_branco)
 
       payload = {
-        action: "blank_vote",
+        action: "vote",
         turma_id: turma.id,
         votos_em_branco: turma.votos_em_branco
       }
@@ -82,7 +77,7 @@ class CandidaturasController < ApplicationController
       notice = "Voto registrado com sucesso!"
     end
 
-    # 🔥 Envia mensagem em tempo real para todos conectados
+    # Envia mensagem em tempo real para todos conectados
     ActionCable.server.broadcast(
       "VotingSessionChannel",
       payload
@@ -90,7 +85,7 @@ class CandidaturasController < ApplicationController
 
     puts "Voto registrado e broadcast enviado: #{payload}"
 
-    redirect_to selecionar_turma_candidaturas_path, notice: notice
+    redirect_to urna_candidaturas_path, notice: notice
   end
 
 
@@ -113,7 +108,4 @@ class CandidaturasController < ApplicationController
     )
   end
 
-  def require_mesario
-    redirect_to root_path, alert: "Acesso negado." unless current_user&.mesario?
-  end
 end

@@ -87,21 +87,17 @@ function mostrarNotificacao(mensagem, tipo = 'info') {
 // Conecta ao canal WebSocket da URNA
 consumer.subscriptions.create("UrnaChannel", {
   connected() {
-    console.log("✅ [URNA] Conectado ao canal de urna em tempo real");
+    console.log("[URNA] Conectado ao canal de urna em tempo real");
   },
 
   disconnected() {
-    console.log("❌ [URNA] Desconectado do canal de urna");
+    console.log("[URNA] Desconectado do canal de urna");
   },
 
   received(data) {
-    console.log("📊 [URNA] Dados recebidos:", data);
     
-    // Quando uma sessão é aberta
     if (data.action === "session_opened") {
-      console.log("🚀 [URNA] Sessão aberta para turma:", data.turma_id);
       
-      // Recarrega a página para sair da tela de aguardo
       mostrarNotificacao("Sessão iniciada! Carregando urna...", "resume");
       
       setTimeout(() => {
@@ -109,9 +105,7 @@ consumer.subscriptions.create("UrnaChannel", {
       }, 1000);
     }
     
-    // Quando o status da sessão muda
     else if (data.action === "status_changed") {
-      console.log("🔄 [URNA] Status da votação mudou:", data.status);
       
       if (data.status === "paused") {
         mostrarTelaPausa();
@@ -122,7 +116,6 @@ consumer.subscriptions.create("UrnaChannel", {
         mostrarNotificacao("Votação retomada! Você já pode votar.", "resume");
       }
       else if (data.status === "closed") {
-        console.log("🔒 [URNA] Sessão encerrada");
         mostrarNotificacao("Sessão encerrada!", "info");
         
         setTimeout(() => {
@@ -133,7 +126,6 @@ consumer.subscriptions.create("UrnaChannel", {
   }
 });
 
-// Adiciona estilos CSS para animações
 const estilos = document.createElement('style');
 estilos.textContent = `
   /* ===== TELA DE PAUSA ===== */
