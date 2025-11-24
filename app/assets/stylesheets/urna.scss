@@ -1,112 +1,605 @@
-@import url('https://fonts.googleapis.com/css2?family=Bigelow+Rules&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=MedievalSharp&family=Nanum+Gothic+Coding&family=Oswald:wght@200..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Bigelow+Rules&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=MedievalSharp&family=Nanum+Gothic+Coding&family=Oswald:wght@200..700&family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+
+// VARIÁVEIS
+$urna-primary: #0a1e4a;
+$urna-green: #2e7d32;
+$urna-orange: #f57c00;
+$urna-white: #ffffff;
+$urna-gray: #424242;
+$urna-light: #e0e0e0;
+$urna-screen: #001a33;
+
+// RESET E BODY
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
-    background-color: white;
-    color: black;
+  background: #f2f2f2;
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+}
+
+// WRAPPER DA PÁGINA
+.urna-page-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+// HEADER DA URNA
+.urna-header {
+  background: $urna-white;
+  border-radius: 15px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.urna-logo {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, $urna-primary, lighten($urna-primary, 15%));
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  i {
+    font-size: 2.5rem;
+    color: $urna-white;
+  }
+}
+
+.urna-header-content {
+  flex: 1;
+}
+
+.urna-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: $urna-primary;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.urna-turma {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #666;
+  margin: 0.3rem 0 0 0;
+}
+
+// INSTRUÇÕES
+.urna-instrucoes {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 1rem 2rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.instrucao-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  color: $urna-primary;
+
+  i {
+    font-size: 1.8rem;
+    color: $urna-green;
   }
 
-  h2{
-    font-family: 'Montserrat', sans-serif;
+  span {
+    font-size: 1rem;
+  }
+}
+
+// CONTAINER PRINCIPAL
+.urna-main-container {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1.5rem;
+  min-height: 600px;
+}
+
+// VISOR (TELA)
+.urna-visor {
+  background: $urna-screen;
+  border-radius: 15px;
+  padding: 0;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  border: 8px solid $urna-gray;
+  display: flex;
+  flex-direction: column;
+}
+
+.visor-header {
+  background: linear-gradient(135deg, $urna-primary, lighten($urna-primary, 10%));
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 7px 7px 0 0;
+}
+
+.visor-titulo {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: $urna-white;
+  letter-spacing: 1px;
+}
+
+.visor-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $urna-white;
+
+  i {
+    font-size: 0.8rem;
+    animation: blink 1.5s infinite;
+  }
+
+  &.status-pronto {
+    background: rgba(46, 125, 50, 0.3);
+    
+    i {
+      animation: none;
+      color: #4caf50;
+    }
+  }
+
+  &.status-branco {
+    background: rgba(245, 124, 0, 0.3);
+    
+    i {
+      animation: none;
+      color: #ff9800;
+    }
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.visor-content {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #001a33 0%, #002244 100%);
+}
+
+.candidato-preview {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.preview-fotos {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.foto-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.foto-candidato {
+  width: 180px;
+  height: 220px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 4px solid #4caf50;
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+}
+
+.foto-placeholder {
+  width: 180px;
+  height: 220px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 3px dashed rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  i {
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.foto-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: $urna-white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.preview-info {
+  text-align: center;
+  width: 100%;
+}
+
+.preview-nome {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: $urna-white;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.preview-vice {
+  font-size: 1.2rem;
+  color: #90caf9;
+  font-weight: 500;
+  margin: 0;
+}
+
+.mensagem-branco,
+.mensagem-inicial {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  text-align: center;
+  color: $urna-white;
+
+  i {
+    font-size: 5rem;
+    opacity: 0.8;
+  }
+
+  h3 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 0;
     text-transform: uppercase;
+    letter-spacing: 2px;
   }
 
-  h3{
-    font-family: "Oswald", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: weight;
-    font-style: normal;
+  p {
+    font-size: 1.1rem;
+    opacity: 0.8;
+    margin: 0;
+  }
+}
 
+.mensagem-branco {
+  i {
+    color: #ff9800;
+  }
+}
+
+.mensagem-inicial {
+  display: flex;
+  
+  i {
+    color: #4caf50;
+  }
+}
+
+// TECLADO (CANDIDATOS + BOTÕES)
+.urna-teclado {
+  background: $urna-gray;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.teclado-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  color: $urna-white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  i {
+    font-size: 1.5rem;
+  }
+}
+
+.candidatos-lista {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow-y: auto;
+  max-height: 400px;
+  padding-right: 0.5rem;
+
+  &::-webkit-scrollbar {
+    width: 8px;
   }
 
-.mark{
-    padding: 0;
-    background-color: #ffc107;
- }
-  .urna-container {
-    max-width: 720px;
-    margin: 20px auto;
-    background-color: #343a40;
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
   }
-  .foto-candidato {
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+.btn-candidato {
+  background: $urna-white;
+  border: none;
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4);
+    background: #4caf50;
+
+    .candidato-numero,
+    .candidato-nome,
+    .candidato-vice {
+      color: $urna-white;
+    }
+
+    i {
+      color: $urna-white;
+    }
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.candidato-numero {
+  width: 45px;
+  height: 45px;
+  background: $urna-primary;
+  color: $urna-white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.candidato-dados {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: left;
+}
+
+.candidato-nome {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $urna-primary;
+  text-transform: uppercase;
+}
+
+.candidato-vice {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.btn-candidato i {
+  font-size: 1.5rem;
+  color: $urna-primary;
+  flex-shrink: 0;
+}
+
+// BOTÕES DE CONTROLE
+.botoes-controle {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+#confirmar-container {
+  display: none;
+}
+
+.btn-urna {
+  border: none;
+  border-radius: 12px;
+  padding: 1.25rem 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+  i {
+    font-size: 2rem;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn-branco {
+  background: $urna-white;
+  color: $urna-gray;
+
+  &:hover {
+    background: darken($urna-white, 5%);
+  }
+}
+
+.btn-corrigir {
+  background: $urna-orange;
+  color: $urna-white;
+
+  &:hover {
+    background: darken($urna-orange, 10%);
+  }
+}
+
+.btn-confirmar {
+  background: $urna-green;
+  color: $urna-white;
+
+  i {
+    font-size: 2.5rem;
+  }
+
+  &:hover {
+    background: darken($urna-green, 10%);
+    animation: pulse 0.5s ease;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+// RESPONSIVIDADE
+
+// Tablet Landscape (PRINCIPAL)
+@media (max-width: 1200px) and (orientation: landscape) {
+  .urna-main-container {
+    grid-template-columns: 1.5fr 1fr;
+  }
+
+  .preview-fotos {
+    gap: 1.5rem;
+  }
+
+  .foto-candidato,
+  .foto-placeholder {
     width: 150px;
     height: 180px;
-    border-radius: 4px;
-    margin-bottom: 10px;
   }
-  .btn-branco, .btn-corrigir, .btn-success {
-    width: 32%;
-    margin: 5px;
-    color: white;
-    font-weight: bold;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
+
+  .preview-nome {
+    font-size: 2rem;
+  }
 }
 
-  .btn-branco {
-    background-color: white;
-    color: black;
+// Tablet Portrait
+@media (max-width: 1024px) and (orientation: portrait) {
+  .urna-main-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
-  .btn-corrigir {
-    background-color: orange;
+
+  .urna-visor {
+    min-height: 500px;
   }
-  .btn-success {
-    background-color: green;
-  }
-  .btn-outline-light {
-    width: 100%;
-    margin: 5px 0;
-  }
-  .botoes-finais {
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    gap: 15px;
-}
- #confirmar-container {
-    display: none;
-    width: 32%;
-}
-  #mensagem-branco {
-    display: none;
-    margin-top: 10px;
-    background-color: #ffc107;
-    padding: 10px;
-    border-radius: 4px;
-  }
-  .candidato-info {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-  }
+
   .candidatos-lista {
-    display: flex;
+    max-height: 300px;
+  }
+}
+
+// Mobile
+@media (max-width: 768px) {
+  .urna-header {
     flex-direction: column;
-    margin-left: 20px;
+    text-align: center;
   }
 
-  .pulse {
-    animation: pulseEffect 1.5s ease-in-out infinite;
+  .urna-title {
+    font-size: 1.5rem;
   }
 
-  @keyframes pulseEffect {
-    0%, 100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-    50% {
-      transform: scale(1.05);
-      opacity: 0.8;
-    }
+  .urna-instrucoes {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
   }
+
+  .urna-main-container {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-fotos {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .foto-candidato,
+  .foto-placeholder {
+    width: 130px;
+    height: 160px;
+  }
+
+  .preview-nome {
+    font-size: 1.5rem;
+  }
+
+  .botoes-controle {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-urna {
+    padding: 1rem;
+  }
+}

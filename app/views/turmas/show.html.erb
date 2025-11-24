@@ -1,10 +1,158 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Turma - #{@turma.nome}" %>
 
-<%= render @turma %>
+<div class="container my-5">
+  <!-- Botão Voltar -->
+  <div class="mb-4">
+    <%= link_to turmas_path, class: "btn-back" do %>
+      <i class="bi bi-arrow-left-circle"></i> Voltar para Turmas
+    <% end %>
+  </div>
 
-<div>
-  <%= link_to "Edit this turma", edit_turma_path(@turma) %> |
-  <%= link_to "Back to turmas", turmas_path %>
+  <% if notice %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  <% end %>
 
-  <%= button_to "Destroy this turma", @turma, method: :delete %>
+  <div class="turma-show-card">
+    <!-- Header da Turma -->
+    <div class="turma-show-header">
+      <div class="turma-show-header-content">
+        <div class="turma-show-icon">
+          <i class="bi bi-building"></i>
+        </div>
+        <div>
+          <h1 class="turma-show-title"><%= @turma.nome %></h1>
+          <p class="turma-show-id">
+            <i class="bi bi-hash"></i>
+            ID: <%= @turma.id %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estatísticas da Turma -->
+    <div class="turma-show-stats-section">
+      <h2 class="turma-section-title">
+        <i class="bi bi-graph-up"></i>
+        Estatísticas da Turma
+      </h2>
+      
+      <div class="turma-show-stats-grid">
+        <div class="turma-show-stat-card">
+          <div class="turma-stat-icon candidaturas-icon">
+            <i class="bi bi-trophy-fill"></i>
+          </div>
+          <div class="turma-stat-content">
+            <span class="turma-stat-number"><%= @turma.candidaturas.count %></span>
+            <span class="turma-stat-label">Candidaturas</span>
+          </div>
+        </div>
+
+        <div class="turma-show-stat-card">
+          <div class="turma-stat-icon votos-icon">
+            <i class="bi bi-hand-thumbs-up-fill"></i>
+          </div>
+          <div class="turma-stat-content">
+            <span class="turma-stat-number"><%= @turma.candidaturas.sum(:votos) %></span>
+            <span class="turma-stat-label">Total de Votos</span>
+          </div>
+        </div>
+        <div class="turma-show-stat-card">
+          <div class="turma-stat-icon branco-icon">
+            <i class="bi bi-flag-fill"></i>
+          </div>
+          <div class="turma-stat-content">
+            <span class="turma-stat-number"><%= @turma.candidaturas.sum(:votos) %></span>
+            <span class="turma-stat-label">Votos em brancos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="turma-candidaturas-section">
+
+      <%= button_to destroy_all_votes_turma_path(@turma), method: :delete, class: "btn-clear mb-3" do%>
+        <span class="icon-trash"></span>
+          Apagar todos os votos
+        <span class="sparks"></span>
+      <% end %>
+
+
+      <h2 class="turma-section-title">
+        <i class="bi bi-people-fill"></i>
+        Candidaturas desta Turma
+      </h2>
+
+      <% if @turma.candidaturas.any? %>
+        <div class="turma-candidaturas-list">
+          <% @turma.candidaturas.each do |candidatura| %>
+            <div class="turma-candidatura-item">
+              <div class="turma-candidatura-photos">
+                <% if candidatura.foto_lider.attached? %>
+                  <%= image_tag candidatura.foto_lider, class: "turma-candidatura-photo" %>
+                <% else %>
+                  <div class="turma-photo-placeholder">
+                    <i class="bi bi-person-circle"></i>
+                  </div>
+                <% end %>
+
+                <% if candidatura.vice_lider.present? %>
+                  <% if candidatura.foto_vice.attached? %>
+                    <%= image_tag candidatura.foto_vice, class: "turma-candidatura-photo" %>
+                  <% else %>
+                    <div class="turma-photo-placeholder">
+                      <i class="bi bi-person-circle"></i>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+
+              <div class="turma-candidatura-info">
+                <h4 class="turma-candidatura-name"><%= candidatura.nome_urna %></h4>
+                <div class="turma-candidatura-members">
+                  <span><i class="bi bi-star-fill"></i> <%= candidatura.nome_candidato %></span>
+                  <% if candidatura.vice_lider.present? %>
+                    <span><i class="bi bi-award-fill"></i> <%= candidatura.vice_lider %></span>
+                  <% end %>
+                </div>
+                <div class="turma-candidatura-votos">
+                  <i class="bi bi-hand-thumbs-up-fill"></i>
+                  <%= candidatura.votos %> votos
+                </div>
+              </div>
+
+              <div class="turma-candidatura-action">
+                <%= link_to candidatura, class: "btn-candidatura-view" do %>
+                  <i class="bi bi-eye-fill"></i>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="turma-empty-candidaturas">
+          <i class="bi bi-inbox"></i>
+          <p>Nenhuma candidatura cadastrada para esta turma ainda</p>
+          <%= link_to new_candidatura_path, class: "btn-add-candidatura" do %>
+            <i class="bi bi-plus-circle"></i> Adicionar Candidatura
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Botões de Ação -->
+    <div class="turma-show-actions">
+      <%= link_to edit_turma_path(@turma), class: "btn-turma-show-edit" do %>
+        <i class="bi bi-pencil-square"></i> Editar Turma
+      <% end %>
+
+      <%= button_to @turma, method: :delete,
+          data: { confirm: 'Tem certeza? Todas as candidaturas desta turma serão perdidas!' },
+          class: "btn-turma-show-delete" do %>
+        <i class="bi bi-trash3-fill"></i> Excluir Turma
+      <% end %>
+    </div>
+  </div>
 </div>

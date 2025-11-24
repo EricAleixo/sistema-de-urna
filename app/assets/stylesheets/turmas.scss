@@ -1,0 +1,1863 @@
+// ========================================
+// VARIÁVEIS DE CORES (TURMAS)
+// ========================================
+$primary-navy: #0a1e4a;
+$primary-green: #008000;
+$secondary-gold: #f5b942;
+$accent-red: #e63946;
+$white: #ffffff;
+$light-gray: #f8f9fa;
+
+// ========================================
+// HEADER TURMAS
+// ========================================
+.turmas-header {
+  background: linear-gradient(135deg, $primary-navy 0%, #162d5c 100%);
+  padding: 3rem 0;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+  }
+}
+
+.turmas-title {
+  color: $white;
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+}
+
+.turmas-subtitle {
+  color: $secondary-gold;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
+}
+
+// ========================================
+// ESTATÍSTICAS
+// ========================================
+.turmas-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.stat-card {
+  background: $white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.stat-icon {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, $primary-navy, lighten($primary-navy, 15%));
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  i {
+    font-size: 2rem;
+    color: $white;
+  }
+
+  &.candidates-icon {
+    background: linear-gradient(135deg, $secondary-gold, darken($secondary-gold, 10%));
+  }
+
+  &.votes-icon {
+    background: linear-gradient(135deg, #4caf50, #388e3c);
+  }
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: $primary-navy;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.95rem;
+  color: lighten($primary-navy, 30%);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+// ========================================
+// BOTÃO NOVA TURMA
+// ========================================
+.btn-new-turma {
+  background: linear-gradient(135deg, $secondary-gold 0%, darken($secondary-gold, 10%) 100%);
+  color: $primary-navy;
+  border: none;
+  padding: 1rem 3rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 5px 20px rgba($secondary-gold, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, darken($secondary-gold, 10%) 0%, darken($secondary-gold, 20%) 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba($secondary-gold, 0.5);
+    color: $primary-navy;
+  }
+
+  i {
+    font-size: 1.5rem;
+  }
+}
+.btn-clear {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffcc00; // amarelo sólido
+  color: #0a2342; // azul escuro
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    box-shadow:
+      0 0 12px #ffd84d,
+      0 0 20px #ffeb8a;
+    transform: translateY(-2px);
+
+    .icon-trash {
+      transform: translateY(-2px) rotate(-10deg);
+    }
+  }
+
+  .icon-trash {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-size: cover;
+    background-color: #0a2342;
+    mask: url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/trash.svg")
+      center / contain no-repeat;
+    -webkit-mask: url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/trash.svg")
+      center / contain no-repeat;
+    transition: transform 0.3s ease;
+  }
+
+  .sparks {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: #fff8c6;
+      border-radius: 50%;
+      opacity: 0;
+      animation: spark 0.8s infinite ease-out;
+    }
+
+    &::before {
+      left: 20%;
+      top: 50%;
+    }
+
+    &::after {
+      right: 25%;
+      top: 55%;
+      animation-delay: 0.3s;
+    }
+  }
+}
+
+@keyframes spark {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-18px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+// ========================================
+// CONTAINER DA LISTA
+// ========================================
+.turmas-list-container {
+  background: $white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.turmas-list-header {
+  background: linear-gradient(135deg, lighten($primary-navy, 50%) 0%, lighten($primary-navy, 45%) 100%);
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 3px solid $primary-navy;
+
+  i {
+    font-size: 1.8rem;
+    color: $primary-navy;
+  }
+
+  h3 {
+    color: $primary-navy;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+}
+
+// ========================================
+// GRID DE TURMAS
+// ========================================
+.turmas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.turma-card {
+  background: $white;
+  border: 2px solid $light-gray;
+  border-radius: 15px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &:hover {
+    border-color: $secondary-gold;
+    box-shadow: 0 10px 30px rgba($secondary-gold, 0.2);
+    transform: translateY(-5px);
+  }
+}
+
+.turma-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid $light-gray;
+}
+
+.turma-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, $primary-navy, lighten($primary-navy, 15%));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  i {
+    font-size: 1.5rem;
+    color: $white;
+  }
+}
+
+.turma-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.turma-name {
+  color: $primary-navy;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.turma-id {
+  color: lighten($primary-navy, 30%);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.turma-card-stats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  .turma-stat:nth-child(3) {
+    color: #6c757d; // cinza Bootstrap
+    i {
+      color: #6c757d;
+    }
+  }
+}
+
+.turma-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: lighten($secondary-gold, 35%);
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: darken($secondary-gold, 30%);
+
+  i {
+    font-size: 1.1rem;
+    color: darken($secondary-gold, 10%);
+  }
+}
+
+// ========================================
+// PREVIEW DE CANDIDATURAS NO CARD
+// ========================================
+.turma-candidaturas-preview {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid $light-gray;
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: $primary-navy;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  i {
+    color: $secondary-gold;
+    font-size: 1.1rem;
+  }
+}
+
+.preview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.preview-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: lighten($secondary-gold, 40%);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+
+  &:hover {
+    background: lighten($secondary-gold, 35%);
+    border-color: $secondary-gold;
+    transform: translateX(5px);
+  }
+}
+
+.preview-photos {
+  display: flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
+  position: relative;
+
+  .preview-photo,
+  .preview-photo-placeholder {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid $white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    &:not(:first-child) {
+      margin-left: -10px;
+    }
+  }
+
+  .preview-photo {
+    object-fit: cover;
+  }
+
+  .preview-photo-placeholder {
+    background: linear-gradient(135deg, lighten($primary-navy, 40%), lighten($primary-navy, 30%));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      font-size: 1rem;
+      color: rgba($primary-navy, 0.4);
+    }
+  }
+}
+
+.preview-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.preview-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: $primary-navy;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preview-votes {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: darken($secondary-gold, 20%);
+
+  i {
+    font-size: 0.9rem;
+    color: darken($secondary-gold, 10%);
+  }
+}
+
+.preview-more {
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.preview-more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: $primary-navy;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background: lighten($primary-navy, 50%);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: lighten($primary-navy, 45%);
+    color: $primary-navy;
+    transform: scale(1.05);
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+.turma-empty-preview {
+  margin-top: 1rem;
+  padding: 2rem 1rem;
+  background: $light-gray;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: lighten($primary-navy, 40%);
+
+  i {
+    font-size: 2rem;
+    opacity: 0.5;
+  }
+
+  span {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+}
+
+.turma-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid $light-gray;
+}
+
+.btn-turma-show {
+  flex: 1;
+  background: $primary-navy;
+  color: $white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  &:hover {
+    background: lighten($primary-navy, 10%);
+    color: $white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba($primary-navy, 0.4);
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+.btn-turma-edit {
+  flex: 1;
+  background: $secondary-gold;
+  color: $primary-navy;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  &:hover {
+    background: darken($secondary-gold, 10%);
+    color: $primary-navy;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba($secondary-gold, 0.4);
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+.btn-turma-delete {
+  width: 45px;
+  background: lighten($accent-red, 30%);
+  color: $accent-red;
+  border: 2px solid $accent-red;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: $accent-red;
+    color: $white;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba($accent-red, 0.4);
+  }
+
+  i {
+    font-size: 1.1rem;
+  }
+}
+
+// ========================================
+// EMPTY STATE
+// ========================================
+.empty-state {
+  padding: 5rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+
+  i {
+    font-size: 5rem;
+    color: lighten($primary-navy, 40%);
+  }
+
+  h3 {
+    color: $primary-navy;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  p {
+    color: lighten($primary-navy, 30%);
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+.btn-empty-action {
+  background: linear-gradient(135deg, $secondary-gold 0%, darken($secondary-gold, 10%) 100%);
+  color: $primary-navy;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 5px 20px rgba($secondary-gold, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, darken($secondary-gold, 10%) 0%, darken($secondary-gold, 20%) 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba($secondary-gold, 0.5);
+    color: $primary-navy;
+  }
+
+  i {
+    font-size: 1.3rem;
+  }
+}
+
+// ========================================
+// RESPONSIVIDADE
+// ========================================
+@media (max-width: 768px) {
+  .turmas-grid {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+
+  .turmas-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    justify-content: center;
+  }
+
+  .turma-card-actions {
+    flex-direction: column;
+
+    .btn-turma-show,
+    .btn-turma-edit,
+    .btn-turma-delete {
+      width: 100%;
+    }
+  }
+}
+
+// ========================================
+// PÁGINA SHOW DA TURMA
+// ========================================
+.turma-show-card {
+  background: $white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.turma-show-header {
+  background: linear-gradient(135deg, $primary-navy 0%, #1a3a6e 100%);
+  padding: 3rem 2rem;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, transparent, $secondary-gold, transparent);
+  }
+}
+
+.turma-show-header-content {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.turma-show-icon {
+  width: 80px;
+  height: 80px;
+  background: rgba($secondary-gold, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  i {
+    font-size: 3rem;
+    color: $secondary-gold;
+  }
+}
+
+.turma-show-title {
+  color: $white;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.turma-show-id {
+  color: $secondary-gold;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0.5rem 0 0 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  i {
+    font-size: 1.2rem;
+  }
+}
+
+.turma-show-stats-section {
+  padding: 3rem 2rem;
+  background: $light-gray;
+}
+
+.turma-section-title {
+  color: $primary-navy;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid $secondary-gold;
+
+  i {
+    color: $secondary-gold;
+    font-size: 2rem;
+  }
+}
+
+.turma-show-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.turma-show-stat-card {
+  background: $white;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.turma-stat-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  i {
+    font-size: 2.5rem;
+    color: $white;
+  }
+
+  &.candidaturas-icon {
+    background: linear-gradient(135deg, $secondary-gold, darken($secondary-gold, 10%));
+  }
+
+  &.votos-icon {
+    background: linear-gradient(135deg, #4caf50, #388e3c);
+  }
+
+  &.branco-icon {
+    background: linear-gradient(135deg, #d0d0d0, #b5b5b5);
+  }
+}
+
+.turma-stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.turma-stat-number {
+  font-size: 3rem;
+  font-weight: 800;
+  color: $primary-navy;
+  line-height: 1;
+}
+
+.turma-stat-label {
+  font-size: 1rem;
+  color: lighten($primary-navy, 30%);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.turma-candidaturas-section {
+  padding: 3rem 2rem;
+}
+
+.turma-candidaturas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.turma-candidatura-item {
+  background: $light-gray;
+  border-radius: 15px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+
+  &:hover {
+    border-color: $secondary-gold;
+    box-shadow: 0 5px 20px rgba($secondary-gold, 0.2);
+    transform: translateX(5px);
+  }
+}
+
+.turma-candidatura-photos {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.turma-candidatura-photo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid $secondary-gold;
+}
+
+.turma-photo-placeholder {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, lighten($primary-navy, 40%), lighten($primary-navy, 30%));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid $light-gray;
+
+  i {
+    font-size: 2rem;
+    color: rgba($primary-navy, 0.3);
+  }
+}
+
+.turma-candidatura-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.turma-candidatura-name {
+  color: $primary-navy;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.turma-candidatura-members {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  color: lighten($primary-navy, 20%);
+  font-weight: 600;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    i {
+      color: $secondary-gold;
+      font-size: 1rem;
+    }
+  }
+}
+
+.turma-candidatura-votos {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border-radius: 20px;
+  font-weight: 700;
+  color: #388e3c;
+  width: fit-content;
+
+  i {
+    font-size: 1.1rem;
+  }
+}
+
+.turma-candidatura-action {
+  flex-shrink: 0;
+}
+
+.btn-candidatura-view {
+  width: 50px;
+  height: 50px;
+  background: $primary-navy;
+  color: $white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: lighten($primary-navy, 10%);
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba($primary-navy, 0.4);
+    color: $white;
+  }
+
+  i {
+    font-size: 1.3rem;
+  }
+}
+
+.turma-empty-candidaturas {
+  padding: 4rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  background: $light-gray;
+  border-radius: 15px;
+
+  i {
+    font-size: 4rem;
+    color: lighten($primary-navy, 40%);
+  }
+
+  p {
+    color: lighten($primary-navy, 30%);
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 600;
+  }
+}
+
+.btn-add-candidatura {
+  background: linear-gradient(135deg, $secondary-gold 0%, darken($secondary-gold, 10%) 100%);
+  color: $primary-navy;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 5px 20px rgba($secondary-gold, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, darken($secondary-gold, 10%) 0%, darken($secondary-gold, 20%) 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba($secondary-gold, 0.5);
+    color: $primary-navy;
+  }
+
+  i {
+    font-size: 1.3rem;
+  }
+}
+
+.turma-show-actions {
+  padding: 2rem;
+  background: $light-gray;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-top: 2px solid darken($light-gray, 5%);
+}
+
+.btn-turma-show-edit {
+  flex: 1;
+  max-width: 250px;
+  background: $secondary-gold;
+  color: $primary-navy;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  &:hover {
+    background: darken($secondary-gold, 10%);
+    color: $primary-navy;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba($secondary-gold, 0.4);
+  }
+
+  i {
+    font-size: 1.2rem;
+  }
+}
+
+.btn-turma-show-delete {
+  flex: 1;
+  max-width: 250px;
+  background: lighten($accent-red, 30%);
+  color: $accent-red;
+  border: 2px solid $accent-red;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    background: $accent-red;
+    color: $white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba($accent-red, 0.4);
+  }
+
+  i {
+    font-size: 1.2rem;
+  }
+}
+
+// ========================================
+// PARTIAL DA TURMA
+// ========================================
+.turma-partial-content {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, lighten($primary-navy, 50%) 0%, lighten($primary-navy, 45%) 100%);
+  border-radius: 12px;
+  border-left: 4px solid $primary-navy;
+}
+
+.turma-partial-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, $primary-navy, lighten($primary-navy, 15%));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  i {
+    font-size: 2rem;
+    color: $white;
+  }
+}
+
+.turma-partial-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.turma-partial-label {
+  font-size: 0.85rem;
+  color: lighten($primary-navy, 20%);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.turma-partial-value {
+  font-size: 1.5rem;
+  color: $primary-navy;
+  font-weight: 700;
+}
+
+// ========================================
+// RESPONSIVIDADE SHOW
+// ========================================
+@media (max-width: 768px) {
+  .turma-show-header-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .turma-show-title {
+    font-size: 2rem;
+  }
+
+  .turma-show-icon {
+    width: 60px;
+    height: 60px;
+
+    i {
+      font-size: 2rem;
+    }
+  }
+
+  .turma-show-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .turma-candidatura-item {
+    flex-direction: column;
+    text-align: center;
+
+    .turma-candidatura-members {
+      align-items: center;
+    }
+
+    .turma-candidatura-votos {
+      margin: 0 auto;
+    }
+  }
+
+  .turma-show-actions {
+    flex-direction: column;
+
+    .btn-turma-show-edit,
+    .btn-turma-show-delete {
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+}
+
+// ========================================
+// FORMULÁRIO DE TURMA
+// ========================================
+.turma-form-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.turma-form {
+  background: $white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.turma-form-header {
+  background: linear-gradient(135deg, $primary-navy 0%, #1a3a6e 100%);
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  i {
+    font-size: 2.5rem;
+    color: $secondary-gold;
+  }
+
+  h2 {
+    color: $white;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+}
+
+.turma-form-errors {
+  margin: 2rem;
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  border: 2px solid #ef5350;
+  border-radius: 12px;
+  padding: 1.5rem;
+  animation: shake 0.5s ease;
+
+  .error-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+
+    i {
+      font-size: 1.8rem;
+      color: #d32f2f;
+    }
+
+    h3 {
+      color: #d32f2f;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0;
+    }
+  }
+
+  .error-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+      color: #c62828;
+      font-weight: 600;
+
+      i {
+        color: #e53935;
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+.turma-form-body {
+  padding: 3rem 2rem;
+}
+
+.turma-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.turma-form-label {
+  font-weight: 700;
+  color: $primary-navy;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.turma-input-with-icon {
+  position: relative;
+
+  i {
+    position: absolute;
+    left: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: lighten($primary-navy, 30%);
+    font-size: 1.3rem;
+    z-index: 1;
+  }
+}
+
+.turma-form-control {
+  width: 100%;
+  border: 3px solid $light-gray;
+  border-radius: 12px;
+  padding: 1rem 1rem 1rem 3.5rem;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  font-weight: 600;
+
+  &:focus {
+    border-color: $secondary-gold;
+    box-shadow: 0 0 0 4px rgba($secondary-gold, 0.1);
+    outline: none;
+  }
+
+  &::placeholder {
+    color: lighten($primary-navy, 50%);
+    font-weight: 400;
+  }
+}
+
+.turma-form-help {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: lighten($primary-navy, 30%);
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  i {
+    color: $secondary-gold;
+    font-size: 1rem;
+  }
+}
+
+.turma-form-actions {
+  padding: 2rem;
+  background: $light-gray;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-top: 2px solid darken($light-gray, 5%);
+}
+
+.btn-turma-form-cancel {
+  flex: 1;
+  max-width: 200px;
+  background: lighten($accent-red, 30%);
+  color: $accent-red;
+  border: 2px solid $accent-red;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  &:hover {
+    background: $accent-red;
+    color: $white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba($accent-red, 0.4);
+  }
+
+  i {
+    font-size: 1.2rem;
+  }
+}
+
+.btn-turma-form-submit {
+  flex: 2;
+  max-width: 400px;
+  background: linear-gradient(135deg, $secondary-gold 0%, darken($secondary-gold, 10%) 100%);
+  color: $primary-navy;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+
+  &:hover {
+    background: linear-gradient(135deg, darken($secondary-gold, 10%) 0%, darken($secondary-gold, 20%) 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba($secondary-gold, 0.5);
+  }
+}
+
+// ========================================
+// PÁGINA DE EDIÇÃO (EDIT)
+// ========================================
+.turma-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+
+  .breadcrumb-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $primary-navy;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: $secondary-gold;
+      transform: translateX(3px);
+    }
+
+    i {
+      font-size: 1.1rem;
+    }
+  }
+
+  .breadcrumb-current {
+    color: lighten($primary-navy, 30%);
+    font-weight: 600;
+  }
+
+  > i {
+    color: lighten($primary-navy, 40%);
+    font-size: 0.8rem;
+  }
+}
+
+.turma-edit-page-header {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  border-left: 5px solid $secondary-gold;
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+
+  .turma-edit-header-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, $secondary-gold, darken($secondary-gold, 10%));
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 5px 15px rgba($secondary-gold, 0.3);
+
+    i {
+      font-size: 2.5rem;
+      color: $white;
+    }
+  }
+
+  .turma-edit-header-content {
+    flex: 1;
+  }
+
+  .turma-edit-title {
+    color: $primary-navy;
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .turma-edit-subtitle {
+    color: darken($secondary-gold, 20%);
+    font-size: 1.1rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    i {
+      font-size: 1.2rem;
+      color: $secondary-gold;
+    }
+
+    strong {
+      color: $primary-navy;
+      font-weight: 700;
+    }
+  }
+}
+
+.turma-edit-bottom-actions {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 3px solid $light-gray;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-turma-bottom-show {
+  flex: 1;
+  max-width: 250px;
+  background: linear-gradient(135deg, $primary-navy, lighten($primary-navy, 10%));
+  color: $white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  &:hover {
+    background: linear-gradient(135deg, lighten($primary-navy, 10%), lighten($primary-navy, 20%));
+    color: $white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba($primary-navy, 0.4);
+  }
+
+  i {
+    font-size: 1.2rem;
+  }
+}
+
+.btn-turma-bottom-back {
+  flex: 1;
+  max-width: 250px;
+  background: $light-gray;
+  color: $primary-navy;
+  border: 2px solid darken($light-gray, 10%);
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  &:hover {
+    background: darken($light-gray, 10%);
+    color: $primary-navy;
+    border-color: darken($light-gray, 20%);
+    transform: translateX(-5px);
+  }
+
+  i {
+    font-size: 1.2rem;
+  }
+}
+
+// ========================================
+// PÁGINA NOVA TURMA (NEW)
+// ========================================
+.turma-new-page-header {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border-left: 5px solid #4caf50;
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: 0 5px 20px rgba(76, 175, 80, 0.15);
+
+  .turma-new-header-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #4caf50, #388e3c);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+
+    i {
+      font-size: 2.5rem;
+      color: $white;
+    }
+  }
+
+  .turma-new-header-content {
+    flex: 1;
+  }
+
+  .turma-new-title {
+    color: $primary-navy;
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .turma-new-subtitle {
+    color: darken(#4caf50, 20%);
+    font-size: 1rem;
+    margin: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    line-height: 1.5;
+
+    i {
+      font-size: 1.2rem;
+      color: #4caf50;
+      margin-top: 0.2rem;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.turma-instructions-card {
+  background: linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%);
+  border: 2px solid $secondary-gold;
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+
+  .turma-instructions-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid $secondary-gold;
+
+    i {
+      font-size: 1.8rem;
+      color: darken($secondary-gold, 15%);
+    }
+
+    h3 {
+      color: $primary-navy;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .turma-instructions-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      color: $primary-navy;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.5;
+
+      i {
+        color: #4caf50;
+        font-size: 1.3rem;
+        margin-top: 0.1rem;
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
+.turma-new-bottom-actions {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 3px solid $light-gray;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-turma-bottom-cancel {
+  max-width: 300px;
+  width: 100%;
+  background: lighten($accent-red, 30%);
+  color: $accent-red;
+  border: 2px solid $accent-red;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  &:hover {
+    background: $accent-red;
+    color: $white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba($accent-red, 0.4);
+  }
+
+  i {
+    font-size: 1.3rem;
+  }
+}
+
+// ========================================
+// RESPONSIVIDADE FORMULÁRIOS
+// ========================================
+@media (max-width: 768px) {
+  .turma-form-header {
+    flex-direction: column;
+
+    i {
+      font-size: 2rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+
+  .turma-form-body {
+    padding: 2rem 1.5rem;
+  }
+
+  .turma-form-actions {
+    flex-direction: column;
+
+    .btn-turma-form-cancel,
+    .btn-turma-form-submit {
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+
+  .turma-edit-page-header,
+  .turma-new-page-header {
+    flex-direction: column;
+    text-align: center;
+
+    .turma-edit-header-icon,
+    .turma-new-header-icon {
+      width: 60px;
+      height: 60px;
+
+      i {
+        font-size: 2rem;
+      }
+    }
+
+    .turma-edit-title,
+    .turma-new-title {
+      font-size: 1.5rem;
+    }
+
+    .turma-edit-subtitle,
+    .turma-new-subtitle {
+      justify-content: center;
+    }
+  }
+
+  .turma-edit-bottom-actions {
+    flex-direction: column;
+
+    .btn-turma-bottom-show,
+    .btn-turma-bottom-back {
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+
+  .turma-breadcrumb {
+    flex-wrap: wrap;
+  }
+}

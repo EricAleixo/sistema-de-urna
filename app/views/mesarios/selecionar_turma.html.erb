@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Urna Eletrônica</title>
+   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+   <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+    <%= stylesheet_link_tag "urna", "data-turbo-track": "reload" %>
+</head>
+<body>
+
+    <div style="text-align: center">
+            <img src="<%= asset_path('urna.gif') %>" alt="Banner" style="width: 100%; height: auto;"><br>
+        </div>
+    <div class="container text-center mt-5">
+        <h1 class="mb-4">Bem-vindo(a) à Urna Eletrônica - DM</h1>
+        <p class="lead">Este sistema criado para eleição dos líderes da ECIT Guarabira Dom Marcelo Pinto Carvalheira, permite realizar a eleição para líder de turma de forma prática e segura. Escolha a turma e continue para registrar seu voto. 🗳️</p>
+
+
+
+        <div class="container mt-4">
+            <h2 class="mb-3">Selecione sua Turma</h2>
+            <%= form_with url: open_voting_session_path, method: :post, id: "votingForm" do %>
+            <%= hidden_field_tag :turma_id, nil, id: "turmaInput" %>
+                <select name="turma_id" class="form-control mb-3">
+                    <option value="">Selecione...</option>
+                    <% @turmas.each do |turma| %>
+                        <option value="<%= turma.id %>"><%= turma.nome %></option>
+                    <% end %>
+                </select>
+                <button type="submit" class="btn btn-primary">Continuar</button>
+            <% end %>
+
+            <% if flash[:alert] %>
+                <div class="alert alert-danger mt-3">
+                    <%= flash[:alert] %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+
+   <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+   <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+</body>
+</html>

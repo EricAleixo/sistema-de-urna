@@ -7,18 +7,388 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-
     <%= yield :head %>
 
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= yield :stylesheets %>
+    
+    <style>
+      .navbar-eleitoral {
+        background: linear-gradient(135deg, #0a1e4a 0%, #162d5c 100%);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        padding: 0.5rem 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1030;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .navbar-eleitoral.navbar-hidden {
+        transform: translateY(-100%);
+      }
+      
+      .navbar-eleitoral.navbar-visible {
+        transform: translateY(0);
+      }
+      
+      body {
+        transition: padding-top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      body.has-navbar {
+        padding-top: 70px;
+      }
+      
+      body.has-navbar.navbar-is-hidden {
+        padding-top: 0;
+      }
+      
+      .navbar-eleitoral::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #f5b942, transparent);
+      }
+      
+      .navbar-eleitoral .navbar-brand {
+        color: #ffffff;
+        font-weight: 800;
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      
+      .navbar-eleitoral .navbar-brand:hover {
+        color: #f5b942;
+        transform: translateX(5px);
+      }
+      
+      .navbar-eleitoral .navbar-brand-logo {
+        height: 40px;
+        width: auto;
+        filter: drop-shadow(0 2px 8px rgba(245, 185, 66, 0.3));
+        transition: transform 0.3s ease;
+      }
+      
+      .navbar-eleitoral .navbar-brand:hover .navbar-brand-logo {
+        transform: scale(1.05);
+      }
+      
+      .navbar-eleitoral .navbar-toggler {
+        border: 2px solid #f5b942;
+        padding: 0.5rem 0.75rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+      
+      .navbar-eleitoral .navbar-toggler:hover {
+        background: rgba(245, 185, 66, 0.1);
+        transform: scale(1.05);
+      }
+      
+      .navbar-eleitoral .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23f5b942' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+      }
+      
+      .navbar-eleitoral .nav-link {
+        color: rgba(255, 255, 255, 0.9);
+        transition: all 0.3s ease;
+        margin: 0 0.25rem;
+        padding: 0.75rem 1.25rem !important;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        position: relative;
+      }
+      
+      .navbar-eleitoral .nav-link i {
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+      }
+      
+      .navbar-eleitoral .nav-link:hover {
+        color: #f5b942;
+        background: rgba(245, 185, 66, 0.1);
+        transform: translateY(-2px);
+      }
+      
+      .navbar-eleitoral .nav-link:hover i {
+        transform: scale(1.15);
+      }
+      
+      .navbar-eleitoral .nav-link.active {
+        color: #0a1e4a;
+        background: linear-gradient(135deg, #f5b942 0%, #e5a932 100%);
+        font-weight: 700;
+        box-shadow: 0 3px 10px rgba(245, 185, 66, 0.4);
+      }
+      
+      .navbar-eleitoral .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30px;
+        height: 3px;
+        background: #f5b942;
+        border-radius: 2px;
+      }
+      
+      .badge-session-active {
+        background: linear-gradient(135deg, #4caf50, #388e3c);
+        color: #ffffff;
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 0.25rem 0.6rem;
+        border-radius: 12px;
+        margin-left: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+        animation: pulse 2s infinite;
+      }
+      
+      @keyframes pulse {
+        0%, 100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+      
+      .navbar-eleitoral .dropdown-toggle {
+        background: rgba(245, 185, 66, 0.1);
+        border: 2px solid rgba(245, 185, 66, 0.3);
+        border-radius: 25px;
+        padding: 0.5rem 1.25rem !important;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      
+      .navbar-eleitoral .dropdown-toggle:hover {
+        background: rgba(245, 185, 66, 0.2);
+        border-color: #f5b942;
+        transform: translateY(-2px);
+      }
+      
+      .navbar-eleitoral .dropdown-toggle::after {
+        margin-left: 0.5rem;
+        vertical-align: middle;
+      }
+      
+      .navbar-eleitoral .dropdown-menu {
+        background: #ffffff;
+        border: 2px solid #f5b942;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        min-width: 250px;
+      }
+      
+      .navbar-eleitoral .dropdown-item {
+        color: #0a1e4a;
+        font-weight: 600;
+        padding: 0.75rem 1.25rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      
+      .navbar-eleitoral .dropdown-item i {
+        font-size: 1.2rem;
+        color: #f5b942;
+        transition: transform 0.3s ease;
+      }
+      
+      .navbar-eleitoral .dropdown-item:hover {
+        background: linear-gradient(135deg, rgba(245, 185, 66, 0.15), rgba(245, 185, 66, 0.25));
+        color: #0a1e4a;
+        transform: translateX(5px);
+      }
+      
+      .navbar-eleitoral .dropdown-item:hover i {
+        transform: scale(1.2);
+      }
+      
+      .navbar-eleitoral .dropdown-divider {
+        border-top: 2px solid rgba(245, 185, 66, 0.3);
+        margin: 0.5rem 0;
+      }
+      
+      .navbar-eleitoral .navbar-user-email {
+        background: rgba(245, 185, 66, 0.1);
+        border: 2px solid rgba(245, 185, 66, 0.3);
+        border-radius: 25px;
+        padding: 0.5rem 1.25rem !important;
+        font-weight: 600;
+        color: #f5b942;
+        cursor: default;
+        pointer-events: none;
+      }
+      
+      .navbar-eleitoral .navbar-user-email i {
+        color: #f5b942;
+        font-size: 1.3rem;
+      }
+      
+      @media (max-width: 991px) {
+        .navbar-eleitoral .navbar-brand {
+          font-size: 1.2rem;
+        }
+        
+        .navbar-eleitoral .navbar-brand-logo {
+          height: 35px;
+        }
+        
+        .navbar-eleitoral .navbar-collapse {
+          background: rgba(10, 30, 74, 0.98);
+          margin-top: 1rem;
+          padding: 1rem;
+          border-radius: 12px;
+          border: 2px solid rgba(245, 185, 66, 0.3);
+        }
+        
+        .navbar-eleitoral .nav-link.active::after {
+          display: none;
+        }
+        
+        .navbar-eleitoral .dropdown-menu {
+          border: none;
+          box-shadow: none;
+          background: rgba(245, 185, 66, 0.05);
+          margin-top: 0.5rem;
+        }
+      }
+    </style>
   </head>
 
-  <body>
+  <body class="<%= 'has-navbar' if user_signed_in? && current_user.mesario? %>">
+    <% if user_signed_in? && current_user.mesario? %>
+      <nav class="navbar navbar-expand-lg navbar-eleitoral">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="<%= root_path %>">
+            <%= image_tag "logo.png", alt: "Logo", class: "navbar-brand-logo" %>
+            Sistema Eleitoral
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <a class="nav-link <%= 'active' if controller_name == 'home' %>" href="<%= root_path %>">
+                  <i class="bi bi-house-door"></i> Início
+                </a>
+              </li>
+              
+              <li class="nav-item">
+                <a class="nav-link <%= 'active' if controller_name == 'turmas' %>" href="<%= turmas_path %>">
+                  <i class="bi bi-people"></i> Turmas
+                </a>
+              </li>
+              
+              <li class="nav-item">
+                <a class="nav-link <%= 'active' if controller_name == 'candidaturas' %>" href="<%= candidaturas_path %>">
+                  <i class="bi bi-person-badge"></i> Candidaturas
+                </a>
+              </li>
+              
+              <li class="nav-item">
+                <a class="nav-link <%= 'active' if controller_name == 'mesarios' %>" href="<%= mesario_selecionar_turma_path %>">
+                  <i class="bi bi-box"></i> Urna
+                </a>
+              </li>
+              
+              <li class="nav-item">
+                <a class="nav-link <%= 'active' if controller_name == 'voting_sessions' %>" href="<%= voting_sessions_path %>">
+                  <i class="bi bi-clock-history"></i> Sessões de Votação
+                  <% if @active_session || (defined?(current_session) && current_session) %>
+                    <span class="badge-session-active">Ativa</span>
+                  <% end %>
+                </a>
+              </li>
+            </ul>
+            
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <span class="nav-link navbar-user-email">
+                  <i class="bi bi-person-circle"></i> <%= current_user.email %>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    <% end %>
+
     <%= yield %>
+    
+    <% if user_signed_in? && current_user.mesario? %>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const navbar = document.querySelector('.navbar-eleitoral');
+          const body = document.body;
+          let hideTimer;
+          const timeToLeft = 1800
+          
+          function scheduleHide() {
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => {
+              navbar.classList.add('navbar-hidden');
+              navbar.classList.remove('navbar-visible');
+              body.classList.add('navbar-is-hidden');
+            }, timeToLeft);
+          }
+          
+          function showNavbar() {
+            navbar.classList.remove('navbar-hidden');
+            navbar.classList.add('navbar-visible');
+            body.classList.remove('navbar-is-hidden');
+            scheduleHide();
+          }
+          
+          scheduleHide();
+          
+          document.addEventListener('mousemove', function(e) {
+            if (e.clientY < 100) {
+              showNavbar();
+            }
+          });
+          
+          navbar.addEventListener('mouseenter', function() {
+            showNavbar();
+          });
+          
+          navbar.addEventListener('mouseleave', function() {
+            scheduleHide();
+          });
+        });
+      </script>
+    <% end %>
   </body>
 </html>

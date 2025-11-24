@@ -1,11 +1,59 @@
-<% content_for :title, "New turma" %>
+<% content_for :title, "Nova Turma" %>
 
-<h1>New turma</h1>
+<div class="container my-5">
+  <!-- Breadcrumb -->
+  <div class="turma-breadcrumb">
+    <%= link_to turmas_path, class: "breadcrumb-link" do %>
+      <i class="bi bi-house-fill"></i> Turmas
+    <% end %>
+    <i class="bi bi-chevron-right"></i>
+    <span class="breadcrumb-current">Nova Turma</span>
+  </div>
 
-<%= render "form", turma: @turma %>
+  <!-- Header da Página Nova Turma -->
+  <div class="turma-new-page-header">
+    <div class="turma-new-header-icon">
+      <i class="bi bi-plus-circle-fill"></i>
+    </div>
+    <div class="turma-new-header-content">
+      <h1 class="turma-new-title">Cadastrar Nova Turma</h1>
+      <p class="turma-new-subtitle">
+        <i class="bi bi-info-circle-fill"></i>
+        Adicione uma nova turma ao sistema de eleições
+      </p>
+    </div>
+  </div>
 
-<br>
+  <!-- Card de Instruções -->
+  <div class="turma-instructions-card">
+    <div class="turma-instructions-header">
+      <i class="bi bi-lightbulb-fill"></i>
+      <h3>Dicas</h3>
+    </div>
+    <ul class="turma-instructions-list">
+      <li>
+        <i class="bi bi-check-circle-fill"></i>
+        Escolha um nome claro e único para a turma
+      </li>
+      <li>
+        <i class="bi bi-check-circle-fill"></i>
+        Use identificadores como ano, letra ou curso (Ex: 3º Ano A, Turma 201)
+      </li>
+      <li>
+        <i class="bi bi-check-circle-fill"></i>
+        Após criar a turma, você poderá adicionar candidaturas
+      </li>
+    </ul>
+  </div>
 
-<div>
-  <%= link_to "Back to turmas", turmas_path %>
+  <!-- Formulário -->
+  <%= render "form", turma: @turma %>
+
+  <!-- Botão de Navegação Inferior -->
+  <div class="turma-new-bottom-actions">
+    <%= link_to turmas_path, class: "btn-turma-bottom-cancel" do %>
+      <i class="bi bi-x-circle"></i>
+      Cancelar e Voltar
+    <% end %>
+  </div>
 </div>

@@ -1,11 +1,63 @@
-<% content_for :title, "New candidatura" %>
+<% content_for :title, "Nova Candidatura - Eleições" %>
 
-<h1>New candidatura</h1>
+<div class="container my-5">
+  <!-- Breadcrumb / Navegação -->
+  <div class="new-breadcrumb">
+    <%= link_to candidaturas_path, class: "breadcrumb-link" do %>
+      <i class="bi bi-house-fill"></i> Candidaturas
+    <% end %>
+    <i class="bi bi-chevron-right"></i>
+    <span class="breadcrumb-current">Nova Candidatura</span>
+  </div>
 
-<%= render "form", candidatura: @candidatura %>
+  <!-- Header da Página Nova Candidatura -->
+  <div class="new-page-header">
+    <div class="new-header-icon">
+      <i class="bi bi-plus-circle-fill"></i>
+    </div>
+    <div class="new-header-content">
+      <h1 class="new-title">Cadastrar Nova Candidatura</h1>
+      <p class="new-subtitle d-flex align-items-center">
+        <i class="bi bi-info-circle-fill"></i> 
+        Preencha os dados da chapa para participar das eleições de Líderes de Turma
+      </p>
+    </div>
+  </div>
 
-<br>
+  <!-- Card de Instruções -->
+  <div class="instructions-card">
+    <div class="instructions-header">
+      <i class="bi bi-lightbulb-fill"></i>
+      <h3>Instruções Importantes</h3>
+    </div>
+    <ul class="instructions-list">
+      <li>
+        <i class="bi bi-check-circle-fill"></i>
+        Preencha todos os campos obrigatórios do líder e vice-líder
+      </li>
+      <li>
+        <i class="bi bi-check-circle-fill"></i>
+        O nome na urna deve ser curto e fácil de lembrar (máximo 20 caracteres)
+      </li>
+      <li>
+        <i class="bi bi-check-circle-fill"></i>
+        As fotos devem ser recentes, em boa qualidade (PNG ou JPG)
+      </li>
+      <li>
+        <i class="bi bi-check-circle-fill"></i>
+        Selecione a turma correta antes de enviar
+      </li>
+    </ul>
+  </div>
 
-<div>
-  <%= link_to "Back to candidaturas", candidaturas_path %>
+  <!-- Formulário -->
+  <%= render "form", candidatura: @candidatura %>
+
+  <!-- Botão de Navegação Inferior -->
+  <div class="new-bottom-actions">
+    <%= link_to candidaturas_path, class: "btn-bottom-cancel" do %>
+      <i class="bi bi-x-circle"></i>
+      Cancelar e Voltar
+    <% end %>
+  </div>
 </div>
