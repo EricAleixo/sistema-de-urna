@@ -12,6 +12,7 @@
 </div>
 
 <div>
+  <% if @candidaturas.any? %>
     <div class="candidates-grid">
           <% @candidaturas.each_with_index do |candidatura, index| %>
             <div class="candidate-card <%= 'winner-card' if index == 0 && @session.status == 'closed' %>">
@@ -90,4 +91,5 @@
             </div>
           <% end %>
         </div>
+        <%end%>
 </div>
