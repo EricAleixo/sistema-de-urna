@@ -83,7 +83,13 @@ class CandidaturasController < ApplicationController
       payload
     )
 
+    @session = VotingSession.find_by_status("open")
+    puts @session
+    puts "Sessão aqui: "
+
     puts "Voto registrado e broadcast enviado: #{payload}"
+    @session.update(status: :closed)
+    puts @session.status
 
     redirect_to urna_candidaturas_path, notice: notice
   end

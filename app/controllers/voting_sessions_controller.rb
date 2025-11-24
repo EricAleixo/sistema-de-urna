@@ -41,6 +41,24 @@ class VotingSessionsController < ApplicationController
     end
   end
 
+  def open_one
+    @session = VotingSession.find(params[:id])
+    @session.update(status: "open")
+
+    ActionCable.server.broadcast(
+        "UrnaChannel",
+        {
+          action: "session_opened",
+          status: "open",
+          turma_id: @session.turma_id,
+          session_id: @session.id
+        }
+    )
+
+    redirect_to voting_session_path(@session), notice: "Sessão de voto criada com sucesso!"
+    
+  end
+
   def open
     VotingSession.update_all(status: "closed")
     turma_id = params[:turma_id]
