@@ -126,6 +126,16 @@
             </div>
           </div>
         <% end %>
+         <% else %>
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M9 11H3v2h6m-6 8h18v-2H3m3-6h3v2H6m5-2h9v2h-9m-3-6h18v2H3z"/>
+            </svg>
+          </div>
+          <h3 class="empty-title">Nenhuma Candidatura Cadastrada</h3>
+          <p class="empty-description">Esta turma ainda não possui candidatos registrados para a eleição.</p>
+        </div>
         <%end%>
         </div>
 </div>
