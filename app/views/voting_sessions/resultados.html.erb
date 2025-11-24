@@ -105,6 +105,27 @@
             </div>
           <% end %>
         </div>
+        <% if @turma.votos_em_branco && @turma.votos_em_branco > 0 %>
+          <div class="blank-votes-card">
+            <div class="blank-icon-wrapper">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+              </svg>
+            </div>
+            <div class="blank-info">
+              <span class="blank-title">Votos em Branco</span>
+              <span class="blank-description">Eleitores que optaram por não escolher nenhum candidato</span>
+            </div>
+            <div class="blank-stats">
+              <span class="blank-number"><%= @turma.votos_em_branco %></span>
+              <% if @total_votos > 0 %>
+                <span class="blank-percent">
+                  <%= number_to_percentage((@turma.votos_em_branco.to_f / @total_votos * 100), precision: 1) %>
+                </span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
         <%end%>
         </div>
 </div>
