@@ -12,6 +12,9 @@ class VotingSessionsController < ApplicationController
   end
 
   def resultados
+    @session = VotingSession.find(params[:id])
+    @turma = @session.turma
+    @candidaturas = @turma.candidaturas
   end
 
   def toggle_status

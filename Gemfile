@@ -11,6 +11,9 @@ gem "bootstrap", "~> 5.3.3"
 
 gem 'sassc-rails'
 
+gem 'bootstrap-icons'
+
+
 gem "devise"
 
 # Use the Puma web server [https://github.com/puma/puma]
