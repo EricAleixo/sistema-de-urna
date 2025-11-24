@@ -15,6 +15,7 @@ class VotingSessionsController < ApplicationController
     @session = VotingSession.find(params[:id])
     @turma = @session.turma
     @candidaturas = @turma.candidaturas 
+    @total_votos = @candidaturas.sum(:votos) + (@turma.votos_em_branco || 0)
   end
 
   def toggle_status
