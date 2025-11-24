@@ -279,6 +279,7 @@ consumer.subscriptions.create("VotingSessionChannel", {
     if (data.action === "vote") {
       atualizarVotos(data);
       mostrarNotificacao("Novo voto registrado!");
+      window.location.reload();
     }
     // Status changes são ignorados no painel administrativo
   }

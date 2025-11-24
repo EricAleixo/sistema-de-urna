@@ -2373,3 +2373,117 @@ candidatura-action-container {
 .retomar-button{
   background:#059669;
 }
+
+.btn-ver-votos {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, $blue 0%, darken($blue, 10%) 100%);
+  color: $white;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(59, 130, 246, 0.4);
+
+    &::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    svg {
+      transform: scale(1.1);
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+
+  svg {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+
+  span {
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.015em;
+  }
+}
+
+.session-actions-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    
+    .btn-ver-votos,
+    .btn-action-primary {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+.btn-ver-votos-destaque {
+  background: linear-gradient(135deg, $success 0%, darken($success, 10%) 100%);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, lighten($success, 10%) 0%, $success 50%, darken($success, 10%) 100%);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  &:hover {
+    box-shadow: 0 8px 28px rgba(16, 185, 129, 0.4);
+
+    &::after {
+      opacity: 1;
+    }
+
+    span {
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-ver-votos {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9375rem;
+  }
+}

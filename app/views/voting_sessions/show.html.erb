@@ -117,16 +117,37 @@
     </div>
   <% end %>
 </div>
-        <div class="empty-state">
-          <div class="empty-icon">
-              <i class="bi bi-graph-up-arrow" style="font-size: 64px;"></i>
-            </div>
-          <h3 class="empty-title">Só pode ver a apuração dos votos quando encerar a sessão</h3>
-          <p class="empty-description">Por motivos de privacidade, os votos só serão exibidos assim que sessão terminar</p>
+    <!-- Preview rápido quando encerrada (opcional) -->
+    <div class="empty-state">
+      <div class="empty-icon">
+        <i class="bi bi-check-circle-fill" style="font-size: 64px; color: #10b981;"></i>
+      </div>
+      <h3 class="empty-title">Sessão Encerrada</h3>
+      <p class="empty-description">
+        A votação foi concluída com sucesso! Clique no botão acima para visualizar 
+        a apuração completa dos votos e a classificação final dos candidatos.
+      </p>
+      
+      <!-- Stats rápidas -->
+      <div style="margin-top: 2rem; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+        <div style="text-align: center;">
+          
+          <div style="font-size: 0.875rem; color: #6b7280; font-weight: 600; text-transform: uppercase;">
+            Total de Votos
+          </div>
         </div>
+        
+        <div style="text-align: center;">
+          
+          <div style="font-size: 0.875rem; color: #6b7280; font-weight: 600; text-transform: uppercase;">
+            Candidatos
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Footer -->
     <div class="footer-section">
-      <%= link_to root_path, class: "back-link" do %>
+      <%= link_to "", class: "back-link" do %>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="19" y1="12" x2="5" y2="12"/>
           <polyline points="12 19 5 12 12 5"/>
